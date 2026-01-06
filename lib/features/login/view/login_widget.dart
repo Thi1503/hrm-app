@@ -92,10 +92,7 @@ extension LoginWidget on LoginPage {
     return UtilWidgets.buildSolidButton(
       title: 'Đăng nhập',
       height: AppDimens.btnLargeFigma,
-      onPressed: () {
-        controller.autovalidateMode.value = AutovalidateMode.always;
-        if (controller.formKey.isValid) {}
-      },
+      onPressed:controller.login,
     );
   }
 }

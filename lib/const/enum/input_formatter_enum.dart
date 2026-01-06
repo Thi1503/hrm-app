@@ -34,4 +34,7 @@ class InputFormatterEnum {
 
   /// 11: Mã cơ quan thuế cấp
   static const int taxAuthorityCode = 11;
+
+  /// 13 : Nhập ngày/tháng/năm
+  static const int dateFullBirthDay = 12;
 }

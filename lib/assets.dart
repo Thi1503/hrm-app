@@ -386,6 +386,10 @@ class Assets {
   static const String ASSETS_ICONS_IC_STAR_CIRCLE_DARK_SVG =
       'assets/icons/ic_star_circle_dark.svg';
 
+  /// {@macro assets_generator.ASSETS_ICONS_IC_UP_FILE_SVG.preview}
+  static const String ASSETS_ICONS_IC_UP_FILE_SVG =
+      'assets/icons/ic_up_file.svg';
+
   /// {@macro assets_generator.ASSETS_ICONS_IC_USERNAME_SVG.preview}
   static const String ASSETS_ICONS_IC_USERNAME_SVG =
       'assets/icons/ic_username.svg';
@@ -426,6 +430,14 @@ class Assets {
   /// {@macro assets_generator.ASSETS_ICONS_ICON_ADD_SVG.preview}
   static const String ASSETS_ICONS_ICON_ADD_SVG = 'assets/icons/icon_add.svg';
 
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_ADVANCED_SVG.preview}
+  static const String ASSETS_ICONS_ICON_ADVANCED_SVG =
+      'assets/icons/icon_advanced.svg';
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_ADVANCED_SELECT_SVG.preview}
+  static const String ASSETS_ICONS_ICON_ADVANCED_SELECT_SVG =
+      'assets/icons/icon_advanced_select.svg';
+
   /// {@macro assets_generator.ASSETS_ICONS_ICON_CALENDAR_SVG.preview}
   static const String ASSETS_ICONS_ICON_CALENDAR_SVG =
       'assets/icons/icon_calendar.svg';
@@ -433,6 +445,33 @@ class Assets {
   /// {@macro assets_generator.ASSETS_ICONS_ICON_CLOCK_SVG.preview}
   static const String ASSETS_ICONS_ICON_CLOCK_SVG =
       'assets/icons/icon_clock.svg';
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_CLOCK_HISTORY_SVG.preview}
+  static const String ASSETS_ICONS_ICON_CLOCK_HISTORY_SVG =
+      'assets/icons/icon_clock_history.svg';
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_HOME_SVG.preview}
+  static const String ASSETS_ICONS_ICON_HOME_SVG = 'assets/icons/icon_home.svg';
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_HOME_SELECT_SVG.preview}
+  static const String ASSETS_ICONS_ICON_HOME_SELECT_SVG =
+      'assets/icons/icon_home_select.svg';
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_NOTIFICATION_SVG.preview}
+  static const String ASSETS_ICONS_ICON_NOTIFICATION_SVG =
+      'assets/icons/icon_notification.svg';
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_NOTIFICATION_SELECT_SVG.preview}
+  static const String ASSETS_ICONS_ICON_NOTIFICATION_SELECT_SVG =
+      'assets/icons/icon_notification_select.svg';
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_PROFILE_SVG.preview}
+  static const String ASSETS_ICONS_ICON_PROFILE_SVG =
+      'assets/icons/icon_profile.svg';
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_PROFILE_SELECT_SVG.preview}
+  static const String ASSETS_ICONS_ICON_PROFILE_SELECT_SVG =
+      'assets/icons/icon_profile_select.svg';
 
   /// {@macro assets_generator.ASSETS_ICONS_ICON_SEARCH_SVG.preview}
   static const String ASSETS_ICONS_ICON_SEARCH_SVG =
@@ -463,9 +502,9 @@ class Assets {
   /// {@macro assets_generator.ASSETS_ICONS_ZALO_ICON_PNG.preview}
   static const String ASSETS_ICONS_ZALO_ICON_PNG = 'assets/icons/zalo_icon.png';
 
-  /// {@macro assets_generator.ASSETS_IMAGES_EMPTY_PAGE_PNG.preview}
-  static const String ASSETS_IMAGES_EMPTY_PAGE_PNG =
-      'assets/images/empty_page.png';
+  /// {@macro assets_generator.ASSETS_IMAGES_EMPTY_FOLDER_PNG.preview}
+  static const String ASSETS_IMAGES_EMPTY_FOLDER_PNG =
+      'assets/images/empty-folder.png';
 
   /// {@macro assets_generator.ASSETS_IMAGES_ERROR_JPG.preview}
   static const String ASSETS_IMAGES_ERROR_JPG = 'assets/images/error.jpg';
@@ -475,6 +514,10 @@ class Assets {
 
   /// {@macro assets_generator.ASSETS_IMAGES_IMAGE_PNG.preview}
   static const String ASSETS_IMAGES_IMAGE_PNG = 'assets/images/image.png';
+
+  /// {@macro assets_generator.ASSETS_IMAGES_IMAGE_DEFAULT_JPG.preview}
+  static const String ASSETS_IMAGES_IMAGE_DEFAULT_JPG =
+      'assets/images/image_default.jpg';
 
   /// {@macro assets_generator.ASSETS_IMAGES_LOGIN_FORM_BG_JPG.preview}
   static const String ASSETS_IMAGES_LOGIN_FORM_BG_JPG =
@@ -776,6 +819,9 @@ final List<String> assetsArray = <String>[
   /// {@macro assets_generator.ASSETS_ICONS_IC_STAR_CIRCLE_DARK_SVG.preview}
   Assets.ASSETS_ICONS_IC_STAR_CIRCLE_DARK_SVG,
 
+  /// {@macro assets_generator.ASSETS_ICONS_IC_UP_FILE_SVG.preview}
+  Assets.ASSETS_ICONS_IC_UP_FILE_SVG,
+
   /// {@macro assets_generator.ASSETS_ICONS_IC_USERNAME_SVG.preview}
   Assets.ASSETS_ICONS_IC_USERNAME_SVG,
 
@@ -809,11 +855,38 @@ final List<String> assetsArray = <String>[
   /// {@macro assets_generator.ASSETS_ICONS_ICON_ADD_SVG.preview}
   Assets.ASSETS_ICONS_ICON_ADD_SVG,
 
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_ADVANCED_SVG.preview}
+  Assets.ASSETS_ICONS_ICON_ADVANCED_SVG,
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_ADVANCED_SELECT_SVG.preview}
+  Assets.ASSETS_ICONS_ICON_ADVANCED_SELECT_SVG,
+
   /// {@macro assets_generator.ASSETS_ICONS_ICON_CALENDAR_SVG.preview}
   Assets.ASSETS_ICONS_ICON_CALENDAR_SVG,
 
   /// {@macro assets_generator.ASSETS_ICONS_ICON_CLOCK_SVG.preview}
   Assets.ASSETS_ICONS_ICON_CLOCK_SVG,
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_CLOCK_HISTORY_SVG.preview}
+  Assets.ASSETS_ICONS_ICON_CLOCK_HISTORY_SVG,
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_HOME_SVG.preview}
+  Assets.ASSETS_ICONS_ICON_HOME_SVG,
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_HOME_SELECT_SVG.preview}
+  Assets.ASSETS_ICONS_ICON_HOME_SELECT_SVG,
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_NOTIFICATION_SVG.preview}
+  Assets.ASSETS_ICONS_ICON_NOTIFICATION_SVG,
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_NOTIFICATION_SELECT_SVG.preview}
+  Assets.ASSETS_ICONS_ICON_NOTIFICATION_SELECT_SVG,
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_PROFILE_SVG.preview}
+  Assets.ASSETS_ICONS_ICON_PROFILE_SVG,
+
+  /// {@macro assets_generator.ASSETS_ICONS_ICON_PROFILE_SELECT_SVG.preview}
+  Assets.ASSETS_ICONS_ICON_PROFILE_SELECT_SVG,
 
   /// {@macro assets_generator.ASSETS_ICONS_ICON_SEARCH_SVG.preview}
   Assets.ASSETS_ICONS_ICON_SEARCH_SVG,
@@ -839,8 +912,8 @@ final List<String> assetsArray = <String>[
   /// {@macro assets_generator.ASSETS_ICONS_ZALO_ICON_PNG.preview}
   Assets.ASSETS_ICONS_ZALO_ICON_PNG,
 
-  /// {@macro assets_generator.ASSETS_IMAGES_EMPTY_PAGE_PNG.preview}
-  Assets.ASSETS_IMAGES_EMPTY_PAGE_PNG,
+  /// {@macro assets_generator.ASSETS_IMAGES_EMPTY_FOLDER_PNG.preview}
+  Assets.ASSETS_IMAGES_EMPTY_FOLDER_PNG,
 
   /// {@macro assets_generator.ASSETS_IMAGES_ERROR_JPG.preview}
   Assets.ASSETS_IMAGES_ERROR_JPG,
@@ -850,6 +923,9 @@ final List<String> assetsArray = <String>[
 
   /// {@macro assets_generator.ASSETS_IMAGES_IMAGE_PNG.preview}
   Assets.ASSETS_IMAGES_IMAGE_PNG,
+
+  /// {@macro assets_generator.ASSETS_IMAGES_IMAGE_DEFAULT_JPG.preview}
+  Assets.ASSETS_IMAGES_IMAGE_DEFAULT_JPG,
 
   /// {@macro assets_generator.ASSETS_IMAGES_LOGIN_FORM_BG_JPG.preview}
   Assets.ASSETS_IMAGES_LOGIN_FORM_BG_JPG,

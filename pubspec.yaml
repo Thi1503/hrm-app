@@ -65,6 +65,7 @@ dependencies:
   keyboard_actions: ^4.2.0
   flutter_rounded_date_picker: ^3.0.4
   shimmer: ^3.0.0
+  dotted_border: ^2.1.0
 
 
 

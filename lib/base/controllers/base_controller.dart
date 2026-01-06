@@ -209,8 +209,12 @@ class BaseGetxController extends GetxController {
     APP_DATA.write(AppConst.keyIsDarkTheme, isDarkMode.value);
 
     if (GetPlatform.isIOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: AppColors.appBarBackgroundColor),
+      SystemUiOverlayStyle(
+        systemNavigationBarColor: AppColors.textColorWhite,
+        systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
       );
     }
 

@@ -91,13 +91,16 @@ class UtilWidgets {
     );
   }
 
-  static Widget buildAppBarTitle(String title,
-      {bool? textAlignCenter, Color? textColor}) {
+  static Widget buildAppBarTitle(
+    String title, {
+    bool? textAlignCenter,
+    Color? textColor,
+  }) {
     textAlignCenter = textAlignCenter ?? GetPlatform.isAndroid;
     return AutoSizeText(
       title,
       textAlign: textAlignCenter ? TextAlign.center : TextAlign.left,
-      style: AppTextStyle.font18Ex.copyWith(
+      style: AppTextStyle.font20Semi.copyWith(
         color: textColor ?? AppColors.gray1,
       ),
       maxLines: 2,
@@ -699,17 +702,32 @@ class UtilWidgets {
     Color? colorBorder,
     Color? backgroundColor,
     double? radius,
+    double? height,
+    BorderRadiusGeometry? borderRadius,
+    double minHeight = 0,
   }) =>
       Container(
-          decoration: BoxDecoration(
+        constraints: BoxConstraints(
+          minHeight: minHeight,
+        ),
+        height: height,
+        width: Get.width,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
             color: backgroundColor ?? AppColors.cardBackgroundColor(),
             borderRadius:
-                BorderRadius.all(Radius.circular(radius ?? AppDimens.radius8)),
+                borderRadius ?? BorderRadius.all(Radius.circular(radius ?? 8)),
             border: Border.all(
-              color: colorBorder ?? Colors.transparent,
+              color: colorBorder ?? Colors.white,
             ),
-          ),
-          child: child);
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.9),
+                blurRadius: 3,
+              ),
+            ]),
+        child: child,
+      );
 
   static Widget buildCardShadow(Widget child,
           {Color? colorBorder,
@@ -909,7 +927,7 @@ class UtilWidgets {
 
 //chờ có ảnh không có thông báo để sử dụng dùng tạm icon
   static Widget buildImgError() {
-    return Image.asset(Assets.ASSETS_IMAGES_EMPTY_PAGE_PNG);
+    return Image.asset(Assets.ASSETS_IMAGES_EMPTY_FOLDER_PNG);
   }
 
 //chờ có ảnh mất kết nối để thay thế tạm dùng icon
@@ -1057,15 +1075,16 @@ class UtilWidgets {
     double? fontSize,
     TextStyle? style,
     double minFontSize = 12,
+    TextOverflow? overflow,
   }) {
     return AutoSizeText(
       text,
-      textAlign: textAlign ?? TextAlign.center,
+      textAlign: textAlign ?? TextAlign.start,
       style: style ??
           AppTextStyle.font12Re.copyWith(
             color: textColor ?? AppColors.textColorDefault,
             fontWeight: fontWeight,
-            overflow: TextOverflow.ellipsis,
+            overflow: overflow ?? TextOverflow.ellipsis,
             fontSize: fontSize ?? AppDimens.fontSmall(),
           ),
       maxLines: maxLine ?? 1,
@@ -1856,6 +1875,114 @@ class UtilWidgets {
           vertical: AppDimens.paddingVerySmall,
         ),
       ),
+    );
+  }
+
+  static Widget buildTextScale(
+    String text, {
+    FontWeight? fontWeight,
+    TextAlign? textAlign,
+    Color? textColor,
+    int? maxLines,
+    double? fontSize,
+    double? textScaleFactor,
+    FontStyle? fontStyle,
+    TextOverflow? overflow,
+    TextDecoration? decoration,
+    TextStyle? textStyle,
+  }) {
+    return Text(
+      text.tr,
+      maxLines: maxLines,
+      textAlign: textAlign ?? TextAlign.start,
+      textScaler: TextScaler.linear(textScaleFactor ?? 1),
+      style: textStyle ??
+          Get.textTheme.bodySmall?.copyWith(
+            color: textColor,
+            fontWeight: fontWeight,
+            overflow: overflow,
+            fontSize: fontSize ?? AppDimens.fontSmall(),
+            fontStyle: fontStyle,
+            decoration: decoration,
+          ),
+    );
+  }
+
+  static Widget buildEmptyData() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Image.asset(
+          Assets.ASSETS_IMAGES_EMPTY_FOLDER_PNG,
+          width: AppDimens.sizeImage,
+          height: AppDimens.sizeImage,
+        ),
+        Text(
+          'Không có dữ liệu',
+          textAlign: TextAlign.center,
+          style: Get.textTheme.bodyLarge,
+        ),
+      ],
+    );
+  }
+
+  static PreferredSizeWidget buildAppBarHrm(
+    String title, {
+    Color? textColor,
+    double? fontSize,
+    FontWeight? fontWeight,
+    Color? actionsIconColor,
+    Color? backbuttonColor,
+    Color? backgroundColor,
+    bool centerTitle = false,
+    Widget? leading,
+    List<Widget>? actions,
+    bool isColorGradient = false,
+    List<Color>? colorTranparent,
+    PreferredSizeWidget? widget,
+  }) {
+    return AppBar(
+      bottom: widget,
+
+      /// ✅ BACK BUTTON
+      iconTheme: IconThemeData(
+        color: backbuttonColor ?? AppColors.textColorWhite,
+      ),
+
+      /// ✅ ACTION ICON
+      actionsIconTheme: IconThemeData(
+        color: actionsIconColor ?? AppColors.textColorWhite,
+      ),
+
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        systemNavigationBarColor: AppColors.textColorWhite,
+        systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+
+      title: buildAppBarTitle(
+        title,
+        textColor: textColor ?? AppColors.textColorWhite,
+      ),
+      centerTitle: centerTitle,
+      titleSpacing: 0,
+      leading: leading,
+      flexibleSpace: isColorGradient
+          ? Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.bottomRight,
+                  colors: colorTranparent ?? AppColors.colorHeadPayroll,
+                ),
+              ),
+            )
+          : null,
+      actions: actions,
+      backgroundColor:
+          isColorGradient ? null : backgroundColor ?? AppColors.orange,
     );
   }
 }

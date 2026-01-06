@@ -1,4 +1,6 @@
 import 'package:do_an_application/base/controllers/base_controller.dart';
+import 'package:do_an_application/routes/app_route.dart';
+import 'package:do_an_application/utils/form_key_ext.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -20,5 +22,12 @@ class LoginController extends BaseGetxController with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     super.onInit();
+  }
+
+  void login() {
+    autovalidateMode.value = AutovalidateMode.always;
+    if (formKey.isValid) {
+      Get.toNamed(AppRoute.routeMain);
+    }
   }
 }

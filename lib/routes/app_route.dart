@@ -1,41 +1,11 @@
 abstract class AppRoute {
   const AppRoute._();
 
+  static const routeMain = '/main';
   static const routeHome = '/home';
   static const routeLogin = '/login';
-  static const routePdf = '/pdf';
-  static const routeProfile = '/profile';
-  static const routeProduct = '/product';
-  static const routeInvoice = '/invoice';
-  static const routeCustomer = '/customer';
-  static const routeInvoiceCreation = '/invoiceCreation';
-  static const routeProductDetail = '/productDetail';
-  static const routeCustomerDetail = '/customerDetail';
-  static const routeInvoiceDetail = '/invoiceDetail';
-  static const routeInvoiceHtml = '/invoiceHtml';
-  static const routeErrorNotice = '/errorNotice';
-  static const routeListErrorNotice = '/listErrorNotice';
-  static const routeErrorNoticeDetail = '/errorNoticeDetail';
-  static const routeReCreateErrorNotice = '/reCreateErrorNotice';
-  static const routeMinutes = '/minutes';
-  static const routeCreateDocument = '/createDocument';
-  static const routeSignDocument = '/signDocument';
-  static const routeHistoryInvoice = '/historyPage';
-  static const routeInvoiceUpdateTotalAmount = '/invoiceUpdateTotalAmount';
-  static const routeQrCode = '/qrCode';
-  static const routeSearchInvoice = '/searchInvoice';
   static const routeDioLog = '/dio_log';
-  static const routeVersionHistory = '/versionHistory';
-  static const routeSetting = '/setting';
-  static const routeNews = '/news';
-  static const routeDeclarationHistory = '/declarationHistory';
-  static const routeDeclarationDetail = '/declarationDetail';
-  static const routeDeclarationInfo = '/declarationInfo';
-  static const routeEmailHistory = '/emailHistory';
-  static const routeEmailHistoryDetail = '/emailHistoryDetail';
-  static const routeVoucherInfo = '/voucherInfo';
-  static const routeVoucherCreation = '/voucherCreation';
-  static const routeReceiptCreation = '/receiptCreation';
-  static const routeInvoiceConfig = '/invoiceConfig';
-  static const routeCompany = '/company';
+  static const routeProfile = '/profile';
+  static const routeRegisterLeave = '/register_leave';
+  static const routeRegisterLeaveDetail = '/register_leave_detail';
 }
