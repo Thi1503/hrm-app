@@ -36,6 +36,8 @@ class AppColors {
 
   static Color errorText() => isDarkMode ? errorTextColor : Colors.redAccent;
 
+  static Color orangeHighlight = const Color(0xffF6844E).withOpacity(0.2);
+
   static Color errorTextField() => colorFF0000;
 
   static Color errorTextHistory() =>

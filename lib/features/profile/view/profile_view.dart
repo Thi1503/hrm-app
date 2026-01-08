@@ -26,6 +26,7 @@ extension ProfileView on ProfilePage {
   }
 
   Widget get placeholder => UtilWidgets.buildEmptyData();
+
   Widget _buildProfileHeader() {
     return Container(
       width: double.infinity,
@@ -56,7 +57,6 @@ extension ProfileView on ProfilePage {
     );
   }
 
-  // AppBar tùy chỉnh nằm trong Gradient
   Widget _buildCustomAppBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -82,7 +82,7 @@ extension ProfileView on ProfilePage {
               color: Colors.white,
               size: 22,
             ),
-            onPressed: () {},
+            onPressed: () => Get.toNamed(AppRoute.routeUpdateAccountInfo),
           ),
         ],
       ),
@@ -215,7 +215,6 @@ extension ProfileView on ProfilePage {
         title: 'Mã nhân viên',
         subtitle: 'NS0433',
       ),
-
       ProfileListTile(
         icon: Icons.account_tree_outlined,
         title: 'Phòng ban',

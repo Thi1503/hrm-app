@@ -1,17 +1,20 @@
 import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/const/colors.dart';
-import 'package:do_an_application/features/register_leave/register_leave_action/controller/register_leave_controller.dart';
+import 'package:do_an_application/features/propose/timekeeping_explanation/timekeeping_explanation_list/controller/timekeeping_explanation_list_controller.dart';
 import 'package:do_an_application/routes/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-part 'register_leave_widget.dart';
+part 'timekeeping_explanation_list_widget.dart';
 
-class RegisterLeavePage extends BaseGetWidget<RegisterLeaveController> {
-  RegisterLeaveController get controller => _controller;
+class TimekeepingExplanationListPage
+    extends BaseGetWidget<TimekeepingExplanationListController> {
+  const TimekeepingExplanationListPage({super.key});
 
-  late final _controller = Get.put(RegisterLeaveController());
-  RegisterLeavePage({super.key});
+  // Getter controller tương tự các màn hình khác
+  @override
+  TimekeepingExplanationListController get controller =>
+      Get.put(TimekeepingExplanationListController());
 
   @override
   Widget buildWidgets() {
@@ -26,7 +29,7 @@ class RegisterLeavePage extends BaseGetWidget<RegisterLeaveController> {
             Expanded(
               child: TabBarView(
                 children: [
-                  _buildLeaveList(), // Danh sách "Của tôi"
+                  _buildExplanationList(),
                   const Center(child: Text('Danh sách Tôi duyệt')),
                 ],
               ),

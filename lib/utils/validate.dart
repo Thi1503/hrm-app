@@ -23,6 +23,8 @@ extension StringUtils on String? {
   bool get isStringNotEmpty => this != null && this!.trim().isNotEmpty;
 
   bool get isStringEmpty => this != null && this!.trim().isEmpty;
+
+  bool get isNullOrEmpty => this == null || (this?.trim().isEmpty ?? true);
 }
 
 bool isListNotEmpty(List<dynamic>? list) => list != null && list.isNotEmpty;

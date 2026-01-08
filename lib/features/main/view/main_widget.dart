@@ -4,22 +4,17 @@ extension MainWidget on MainPage {
   Widget _buildNavigationBar() {
     return Obx(
       () => BottomNavigationBar(
-        // 1. ĐỔI MÀU NAVBAR THÀNH TRẮNG
         backgroundColor: Colors.white,
-
         currentIndex: controller.currentIndex.value,
         onTap: controller.onTabTapped,
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: true,
         selectedItemColor: AppColors.primary2,
         unselectedItemColor: const Color(0xFF9BA3B1),
-
         selectedFontSize: AppDimens.fontSmall(),
         unselectedFontSize: AppDimens.fontSmall(),
-
         selectedLabelStyle: const TextStyle(height: 1.5),
         unselectedLabelStyle: const TextStyle(height: 1.5),
-
         items: [
           _buildNavigationItem(
             label: 'Trang chủ',
@@ -39,10 +34,9 @@ extension MainWidget on MainPage {
           ),
           _buildNavigationItem(
             label: 'Quản lý',
-            icon: Assets
-                .ASSETS_ICONS_ICON_PROFILE_SVG, // Giữ string để không lỗi parameter
+            icon: Assets.ASSETS_ICONS_ICON_PROFILE_SVG,
             activeIcon: Assets.ASSETS_ICONS_ICON_PROFILE_SELECT_SVG,
-            useSvg: false, // Flag để dùng Icons.inventory_2
+            useSvg: false,
           ),
           _buildNavigationItem(
             label: 'Cá nhân',
@@ -63,17 +57,26 @@ extension MainWidget on MainPage {
   }) {
     const double iconSize = 24.0;
 
-    // Chuẩn bị Widget SVG
-    final iconWidget =
-        SvgPicture.asset(icon, width: iconSize, height: iconSize);
-    final activeSvgIcon =
-        SvgPicture.asset(activeIcon, width: iconSize, height: iconSize);
+    final iconWidget = SvgPicture.asset(
+      icon,
+      width: iconSize,
+      height: iconSize,
+    );
+    final activeSvgIcon = SvgPicture.asset(
+      activeIcon,
+      width: iconSize,
+      height: iconSize,
+    );
 
-    // Chuẩn bị Widget Icon Flutter (Cho mục Quản lý)
-    final iconManage = const Icon(Icons.inventory_2_outlined, size: iconSize);
-    final activeIconManage = const Icon(Icons.inventory_2, size: iconSize);
+    final iconManage = const Icon(
+      Icons.inventory_2_outlined,
+      size: iconSize,
+    );
+    final activeIconManage = const Icon(
+      Icons.inventory_2,
+      size: iconSize,
+    );
 
-    // 2. Tối ưu hóa việc chọn Icon để dùng chung cho cả phần Badge
     final Widget finalIcon = useSvg ? iconWidget : iconManage;
     final Widget finalActiveIcon = useSvg ? activeSvgIcon : activeIconManage;
 
@@ -85,8 +88,7 @@ extension MainWidget on MainPage {
       );
     }
 
-    // Logic cho Badge (Đã sửa để dùng được cả Icon Flutter)
-    const count = 90;
+    const count = 2;
     final countLabel = count < 100 ? '$count' : '99+';
 
     return BottomNavigationBarItem(
@@ -94,23 +96,28 @@ extension MainWidget on MainPage {
       icon: Badge(
         label: Text(
           countLabel,
-          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         isLabelVisible: count > 0,
         backgroundColor: Colors.red,
         offset: const Offset(8, -4),
-        child: finalIcon, // Dùng finalIcon thay vì fix cứng iconWidget
+        child: finalIcon,
       ),
       activeIcon: Badge(
         label: Text(
           countLabel,
-          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         isLabelVisible: count > 0,
         backgroundColor: Colors.red,
         offset: const Offset(8, -4),
-        child:
-            finalActiveIcon, // Dùng finalActiveIcon thay vì fix cứng activeSvgIcon
+        child: finalActiveIcon,
       ),
     );
   }

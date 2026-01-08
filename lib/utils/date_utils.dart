@@ -11,6 +11,7 @@ const String PATTERN_8 = "yyyy-MM-ddTHH:mm:ss";
 const String PATTERN_9 = "HH:mm - dd/MM/yyyy";
 const String PATTERN_10 = "dd/MM/yyyy HH:mm:ss";
 const String PATTERN_11 = "HH:mm";
+const String PATTERN_12 = "MM/yyyy";
 const String PATTERN_DEFAULT = "yyyy-MM-dd";
 
 String formatDateTimeToString(DateTime dateTime) {
@@ -23,6 +24,18 @@ int convertDMYToTimeStamps(String dateTimeStr, {String pattern = PATTERN_1}) {
     return dateTime.millisecondsSinceEpoch;
   }
   return 0;
+}
+
+DateTime? convertStringToDateStrict(String? dateTime, String pattern) {
+  if (dateTime == null) {
+    return null;
+  }
+  try {
+    final format = DateFormat(pattern);
+    return format.parseStrict(dateTime);
+  } catch (_) {
+    return null;
+  }
 }
 
 String convertDateToString(DateTime dateTime, String pattern) {

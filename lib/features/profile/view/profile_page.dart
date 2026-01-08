@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../base/widgets/base_widget.dart';
+import '../../../routes/app_route.dart';
 
 part 'profile_view.dart';
 

@@ -163,30 +163,28 @@ class _BuildInputTextState extends State<BuildInputText> with FormatterEnum {
               const EdgeInsets.all(AppDimens.paddingSmall),
           suffixIcon:
               widget.inputTextFormModel.showIconClear ? _suffixIcon() : null,
-          focusedBorder: widget.inputTextFormModel.focusedBorder ??
-              OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimens.radius6),
-                borderSide: BorderSide(color: AppColors.primary2),
-              ),
+          focusedBorder:
+              widget.inputTextFormModel.focusedBorder ?? _outlineInputBorder(),
           errorBorder: widget.inputTextFormModel.errorBorder ??
               OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppDimens.radius6),
                 borderSide: const BorderSide(color: Colors.red),
               ),
-          enabledBorder: widget.inputTextFormModel.enabledBorder ??
-              OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimens.radius6),
-                borderSide: BorderSide(
-                  color: AppColors.gray7,
-                ),
-              ),
+          enabledBorder:
+              widget.inputTextFormModel.enabledBorder ?? _outlineInputBorder(),
           disabledBorder: widget.inputTextFormModel.disabledBorder,
           focusedErrorBorder: widget.inputTextFormModel.focusedErrorBorder ??
-              OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimens.radius6),
-                borderSide: const BorderSide(color: Colors.red),
-              ),
+              _outlineInputBorder(),
         ),
+      ),
+    );
+  }
+
+  OutlineInputBorder _outlineInputBorder() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(AppDimens.radius6),
+      borderSide: BorderSide(
+        color: AppColors.gray7,
       ),
     );
   }

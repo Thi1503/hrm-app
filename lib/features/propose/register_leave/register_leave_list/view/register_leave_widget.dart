@@ -102,30 +102,32 @@ extension RegisterLeaveWidget on RegisterLeavePage {
     );
   }
 
-  // 3. Danh sách các đơn nghỉ phép (Mock data 5 trạng thái)
   Widget _buildLeaveList() {
     final List<Map<String, dynamic>> mockData = [
       {
         'title': 'Xin nghỉ phép tháng 12/2025',
-        'date': '22/12/2025',
+        'leaveType': 'Nghỉ phép năm',
+        'startDate': '22/12/2025', // Trường mới
+        'endDate': '23/12/2025', // Trường mới
         'reason': 'Em về quê có việc gia đình ạ',
-        'time': '08:47 15/12/2025',
         'status': 'Đã duyệt',
         'statusColor': Colors.green,
       },
       {
         'title': 'Xin nghỉ phép tháng 12/2025',
-        'date': '15/12/2025',
-        'reason': 'Nghỉ ốm',
-        'time': '09:00 14/12/2025',
+        'leaveType': 'Nghỉ ốm',
+        'startDate': '15/12/2025',
+        'endDate': '15/12/2025',
+        'reason': 'Sốt xuất huyết cần điều trị',
         'status': 'Chờ quản lý duyệt',
         'statusColor': Colors.orange,
       },
       {
         'title': 'Xin nghỉ phép tháng 12/2025',
-        'date': '10/12/2025',
-        'reason': 'Việc cá nhân',
-        'time': '14:30 08/12/2025',
+        'leaveType': 'Nghỉ không lương',
+        'startDate': '10/12/2025',
+        'endDate': '12/12/2025',
+        'reason': 'Giải quyết việc cá nhân quan trọng',
         'status': 'Chờ nhân sự duyệt',
         'statusColor': Colors.blue,
       },
@@ -138,8 +140,9 @@ extension RegisterLeaveWidget on RegisterLeavePage {
     );
   }
 
-  // 4. Widget Card hiển thị thông tin đơn
   Widget _buildLeaveCard(Map<String, dynamic> data) {
+    final Color statusColor = data['statusColor'] ?? Colors.grey;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -151,26 +154,35 @@ extension RegisterLeaveWidget on RegisterLeavePage {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(data['title'],
-              style:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          Text(
+            data['title'] ?? '',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Color(0xFF1E293B),
+            ),
+          ),
           const SizedBox(height: 10),
-          _buildInfoRow('Ngày nghỉ:', data['date']),
-          _buildInfoRow('Lý do:', data['reason']),
-          if (data['extra_label'] != null)
-            _buildInfoRow(
-                data['extra_label'], data['extra_reason'] ?? data['reason']),
+
+          _buildInfoRow('Loại nghỉ:', data['leaveType'] ?? ''),
+          // Thay thế 'Ngày nghỉ' bằng 'Từ ngày' và 'Đến ngày'
+          _buildInfoRow('Từ ngày:', data['startDate'] ?? ''),
+          _buildInfoRow('Đến ngày:', data['endDate'] ?? ''),
+          _buildInfoRow('Lý do:', data['reason'] ?? ''),
+
           const SizedBox(height: 12),
-          Text(data['time'],
-              style: const TextStyle(color: Colors.grey, fontSize: 12)),
-          const SizedBox(height: 8),
           Row(
             children: [
-              Icon(Icons.circle, color: data['statusColor'], size: 10),
+              Icon(Icons.circle, color: statusColor, size: 10),
               const SizedBox(width: 6),
-              Text(data['status'],
-                  style: TextStyle(
-                      color: data['statusColor'], fontWeight: FontWeight.bold)),
+              Text(
+                data['status'] ?? 'N/A',
+                style: TextStyle(
+                  color: statusColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
+              ),
             ],
           ),
         ],

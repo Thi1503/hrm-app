@@ -1,12 +1,14 @@
+import 'package:do_an_application/const/colors.dart';
 import 'package:flutter/material.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget? title;
+  final String title;
   final Widget? leading;
   final bool? centerTitle;
   final List<Widget>? actions;
   final Color? backgroundColor;
   final IconThemeData? iconTheme;
+  final bool? automaticallyImplyLeading;
 
   const BaseAppBar({
     super.key,
@@ -16,19 +18,36 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.backgroundColor,
     this.iconTheme,
+    this.automaticallyImplyLeading,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      scrolledUnderElevation: 0,
       backgroundColor: backgroundColor,
-      titleSpacing: 0,
       leading: leading,
-      title: title,
-      centerTitle: centerTitle,
+      automaticallyImplyLeading: automaticallyImplyLeading ?? true,
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      centerTitle: centerTitle ?? true,
       actions: actions,
-      iconTheme: iconTheme,
+      elevation: 0,
+      iconTheme: iconTheme ?? IconThemeData(color: Colors.white),
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: AppColors.colorHeadPayroll,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+      ),
     );
   }
 

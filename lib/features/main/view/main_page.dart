@@ -6,7 +6,7 @@ import 'package:do_an_application/features/individual/view/individual_page.dart'
 import 'package:do_an_application/features/main/controller/main_controller.dart';
 import 'package:do_an_application/features/manage/view/manage_page.dart';
 import 'package:do_an_application/features/notification/view/notification_page.dart';
-import 'package:do_an_application/features/propose/view/propose_page.dart';
+import 'package:do_an_application/features/propose/view/propose_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';

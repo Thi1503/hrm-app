@@ -1,6 +1,6 @@
 import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/const/colors.dart';
-import 'package:do_an_application/features/propose/controller/propose_controller.dart';
+import 'package:do_an_application/features/propose/controller/propose_list_controller.dart';
 import 'package:do_an_application/routes/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,16 +29,19 @@ class ProposePage extends BaseGetWidget<ProposeController> {
             icon: Icons.calculate,
             iconColor: Colors.blue,
             title: 'Làm thêm giờ',
+            onTap: () => Get.toNamed(AppRoute.routeOverTimeList),
           ),
           _buildProposeItem(
             icon: Icons.person_search,
             iconColor: Colors.deepPurple,
             title: 'Làm việc ngoài công ty, công tác',
+            onTap: () => Get.toNamed(AppRoute.routeRegisterRemoteList),
           ),
           _buildProposeItem(
             icon: Icons.assignment_late_outlined,
             iconColor: Colors.deepOrangeAccent,
             title: 'Giải trình chấm công',
+            onTap: () => Get.toNamed(AppRoute.routeTimekeepingExplanationList),
           ),
         ],
       ),

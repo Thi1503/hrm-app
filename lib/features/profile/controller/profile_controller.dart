@@ -5,7 +5,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_ticket_provider_mixin.da
 
 class ProfileController extends BaseGetxController
     with GetSingleTickerProviderStateMixin {
-  late final tabCtrl = TabController(length: 3, vsync: this);
+  late final tabCtrl = TabController(length: 2, vsync: this);
 
   late final tabIndex = RxInt(tabCtrl.index);
 }

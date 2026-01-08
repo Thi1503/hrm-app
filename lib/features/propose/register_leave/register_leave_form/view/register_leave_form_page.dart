@@ -1,14 +1,18 @@
 import 'package:do_an_application/base/base.dart';
+import 'package:do_an_application/base/widgets/base_app_bar.dart';
 import 'package:do_an_application/const/colors.dart';
-import 'package:do_an_application/features/register_leave/register_leave_detail/controller/register_leave_detail_controller.dart';
-import 'package:do_an_application/utils/date_utils.dart';
-import 'package:do_an_application/utils/formatter/date_full_input_formatter.dart';
+import 'package:do_an_application/const/dimens.dart';
+import 'package:do_an_application/features/propose/register_leave/register_leave_form/controller/register_leave_form_controller.dart';
+import 'package:do_an_application/utils/sized_box/sized_box.dart';
 import 'package:do_an_application/utils/widgets/app_select_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-part 'register_leave_detail_widget.dart';
+import '../../../../../const/enum/input_formatter_enum.dart';
+import '../../../../../utils/utils.dart';
+
+part 'register_leave_form_widget.dart';
 
 class RegisterLeaveDetailPage
     extends BaseGetWidget<RegisterLeaveDetailController> {
@@ -22,7 +26,7 @@ class RegisterLeaveDetailPage
   Widget buildWidgets() {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: _buildAppBar(),
+      appBar: BaseAppBar(title: 'Đăng ký nghỉ'),
       body: _buildBody(),
       bottomNavigationBar: _buildBottomActions(),
     );

@@ -1,80 +1,43 @@
 part of 'individual_page.dart';
 
 extension IndividualWidget on IndividualPage {
-  // 1. Build AppBar với Gradient Cam và nút Đăng xuất
-  PreferredSizeWidget _buildGradientAppBar() {
-    return AppBar(
-      centerTitle: true,
-      automaticallyImplyLeading: false,
-      elevation: 0,
-      iconTheme: IconThemeData(color: Colors.white),
-      title: const Text(
-        'Cá nhân',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
+  Widget _buildBody() {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        _buildMenuItem(
+          icon: Icons.update,
+          iconColor: Colors.blue,
+          title: 'Lịch sử chấm công',
+          onTap: () => Get.toNamed(AppRoute.routeHistoryExplanation),
         ),
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.logout, color: Colors.white),
-          onPressed: () {
-            Get.offAllNamed(AppRoute.routeLogin);
-          },
+        _buildMenuItem(
+          icon: Icons.grid_on_outlined,
+          iconColor: Colors.teal,
+          title: 'Bảng công',
+          onTap: () => Get.toNamed(AppRoute.routeWorkSheet),
+        ),
+        _buildMenuItem(
+          icon: Icons.account_balance_wallet_outlined,
+          iconColor: Colors.green,
+          title: 'Bảng lương',
+          onTap: () {},
+        ),
+        _buildMenuItem(
+          icon: Icons.key_outlined,
+          iconColor: Colors.lightGreen,
+          title: 'Đổi mật khẩu',
+          onTap: () {},
         ),
       ],
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: AppColors.colorHeadPayroll,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-      ),
     );
-  }
+  } // Helper widget xây dựng từng dòng menu dóng hàng chuẩn
 
-  // 2. Danh sách các item menu
-  List<Widget> _buildMenuItems() {
-    final List<Map<String, dynamic>> items = [
-      {
-        'title': 'Lịch sử chấm công',
-        'icon': Icons.update,
-        'color': Colors.blue
-      },
-      {
-        'title': 'Bảng công',
-        'icon': Icons.grid_on_outlined,
-        'color': Colors.teal
-      },
-      {
-        'title': 'Bảng lương',
-        'icon': Icons.account_balance_wallet_outlined,
-        'color': Colors.green
-      },
-      {
-        'title': 'Đổi mật khẩu',
-        'icon': Icons.key_outlined,
-        'color': Colors.lightGreen
-      },
-    ];
-
-    return items
-        .map((item) => _buildMenuTile(
-              title: item['title'],
-              icon: item['icon'],
-              iconColor: item['color'],
-            ))
-        .toList();
-  }
-
-  // 3. Widget cho từng dòng menu
-  Widget _buildMenuTile({
-    required String title,
+  Widget _buildMenuItem({
     required IconData icon,
     required Color iconColor,
+    required String title,
+    void Function()? onTap,
   }) {
     return Column(
       children: [
@@ -84,7 +47,7 @@ extension IndividualWidget on IndividualPage {
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: iconColor.withOpacity(0.15), // Nền màu nhạt cho icon
+              color: iconColor.withOpacity(0.15),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -96,25 +59,24 @@ extension IndividualWidget on IndividualPage {
           title: Text(
             title,
             style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
               color: Color(0xFF1E293B),
             ),
           ),
           trailing: const Icon(
             Icons.keyboard_arrow_right,
-            color: Colors.black87,
-            size: 28,
+            size: 24,
+            color: Colors.black45,
           ),
-          onTap: () {
-            // Điều hướng khi click
-          },
+          onTap: onTap,
         ),
         const Divider(
-            height: 1,
-            indent: 70,
-            endIndent: 0,
-            color: Color(0xFFEEEEEE)), // Đường kẻ ngăn cách
+          height: 1,
+          indent: 70, // Căn lề divider khớp với phần title
+          endIndent: 0,
+          color: Color(0xFFEEEEEE),
+        ),
       ],
     );
   }

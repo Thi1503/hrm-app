@@ -3,10 +3,13 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:do_an_application/generated/locales.g.dart';
+import 'package:do_an_application/utils/sized_box/sized_box.dart';
+import 'package:do_an_application/utils/widgets/button_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:flutter_picker_plus/flutter_picker_plus.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:flutter_spinbox_fork/flutter_spinbox.dart';
@@ -792,9 +795,8 @@ class UtilWidgets {
       context: Get.context!,
       height: Get.height / 1.8,
       initialDate: dateTimeInit,
-      firstDate: minTime ?? DateTime.utc(DateTime.now().year - 10),
+      firstDate: minTime ?? DateTime.utc(DateTime.now().year - 100),
       lastDate: maxTime,
-      // barrierDismissible: true,
       theme: ThemeData(
         primaryColor: AppColors.bottomSheetBgColor,
         dialogBackgroundColor: AppColors.bottomSheetBgColor,
@@ -813,18 +815,198 @@ class UtilWidgets {
             AppTextStyle.font16Bo.copyWith(color: AppColors.hintTextColor()),
         textStyleButtonPositive:
             AppTextStyle.font16Bo.copyWith(color: AppColors.primary2),
+        textStyleCurrentDayOnCalendar: AppTextStyle.font16Bo.copyWith(
+          color: Colors.black,
+        ),
         decorationDateSelected: BoxDecoration(
           color: AppColors.primary2,
           shape: BoxShape.circle,
         ),
-        textStyleCurrentDayOnCalendar: AppTextStyle.font16Bo.copyWith(
-          color: AppColors.primary2,
+        textStyleDayOnCalendarSelected: AppTextStyle.font16Bo.copyWith(
+          color: Colors.white,
         ),
         textStyleYearButton: AppTextStyle.font16Bo,
         textStyleDayButton: AppTextStyle.font16Bo,
       ),
     );
     return newDateTime;
+  }
+
+  static Future<DateTime?> timePickerUtils({
+    required String initialDate,
+    bool requireDate = false,
+  }) async {
+    DateTime? time;
+    final value = initialDate.isNullOrEmpty
+        ? DateTime.now()
+        : convertStringToDate(initialDate, PATTERN_11);
+
+    final picker = Picker(
+      adapter: DateTimePickerAdapter(
+        customColumnType: [3, 4],
+        value: value,
+      ),
+      looping: false,
+      hideHeader: true,
+      itemExtent: Get.height * 0.04,
+      selectedTextStyle: TextStyle(
+        color: AppColors.primary2,
+        fontWeight: FontWeight.bold,
+        fontSize: AppDimens.fontBig(),
+      ),
+      selectionOverlay: Container(
+        margin: const EdgeInsets.symmetric(horizontal: AppDimens.paddingSmall),
+        decoration: BoxDecoration(
+          color: AppColors.orangeHighlight,
+          borderRadius: BorderRadius.circular(AppDimens.radius8),
+        ),
+      ),
+    );
+
+    await Get.bottomSheet(
+      UtilWidgets.baseBottomSheet(
+        title: '',
+        noAppBar: true,
+        isMiniSize: true,
+        miniSizeHeight: Get.height * 0.4,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            sdsSBHeight4,
+            UtilWidgets.buildText(
+              'Chọn giờ',
+              textColor: AppColors.colorBlack,
+              fontSize: AppDimens.fontBig(),
+              fontWeight: FontWeight.w600,
+            ),
+            UtilWidgets.sizedBox20,
+            picker.makePicker(),
+            const Spacer(),
+            ButtonUtils.buildElevatedButton(
+              width: Get.width * 0.9,
+              label: 'Xác nhận',
+              onPressed: () {
+                time = DateTime.parse(picker.adapter.toString());
+                Get.back();
+              },
+              backgroundColor: AppColors.mainColors,
+              foregroundColor: AppColors.colorWhite,
+            ),
+            sdsSBHeight24,
+          ],
+        ),
+      ),
+    );
+
+    return time == null
+        ? null
+        : !requireDate
+            ? DateTime(1, 1, 1, time!.hour, time!.minute, 0, 0, 0)
+            : DateTime(
+                value.year,
+                value.month,
+                value.day,
+                time!.hour,
+                time!.minute,
+                0,
+                0,
+                0,
+              );
+  }
+
+  static Widget baseBottomSheet({
+    required String title,
+    required Widget body,
+    Widget? iconTitle,
+    bool isSecondDisplay = false,
+    bool isMiniSize = false,
+    double? paddingPage,
+    double? miniSizeHeight,
+    Function()? onPressed,
+    Widget? actionArrowBack,
+    double? padding,
+    double? paddingBottom,
+    bool noAppBar = false,
+    Color? backgroundColor,
+    TextAlign? textAlign,
+    double? maxWidth,
+    AlignmentGeometry? alignment,
+    bool isHeightMin = false,
+  }) {
+    return SafeArea(
+      bottom: false,
+      minimum: EdgeInsets.only(
+        top: Get.mediaQuery.padding.top + (isSecondDisplay ? 100 : 20),
+      ),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: paddingPage ?? AppDimens.paddingVerySmall,
+          ),
+          decoration: BoxDecoration(
+            color: backgroundColor ?? AppColors.bottomSheet(),
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(
+                AppDimens.paddingMedium,
+              ),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Center(
+                child: Container(
+                  width: 60,
+                  height: AppDimens.paddingSmallest,
+                  margin: const EdgeInsets.all(AppDimens.paddingVerySmall),
+                  decoration: BoxDecoration(
+                      color: AppColors.iconHomeColor(),
+                      borderRadius: const BorderRadius.all(Radius.circular(8))),
+                ),
+              ),
+              noAppBar
+                  ? const SizedBox()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            title.tr,
+                            textAlign: textAlign ?? TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Get.textTheme.titleMedium!.copyWith(
+                              color: AppColors.textColorDefault,
+                            ),
+                          ),
+                        ),
+                        iconTitle ?? const SizedBox(),
+                      ],
+                    ),
+              isMiniSize
+                  ? Flexible(
+                      child: SizedBox(
+                        height: isHeightMin
+                            ? null
+                            : (miniSizeHeight ?? Get.height / 2),
+                        child: body,
+                      ),
+                    )
+                  : Expanded(
+                      child: body,
+                    ),
+            ],
+          ).paddingSymmetric(
+            horizontal: padding ?? 0,
+          ),
+        ),
+      ).paddingOnly(
+        bottom: paddingBottom ?? 0,
+      ),
+    );
   }
 
   static Widget buildItemShowBottomSheet({
@@ -1983,6 +2165,166 @@ class UtilWidgets {
       actions: actions,
       backgroundColor:
           isColorGradient ? null : backgroundColor ?? AppColors.orange,
+    );
+  }
+
+  static Future<DateTime?> showMonthPicker({
+    required DateTime initialDate,
+  }) async {
+    final rxSelectedMonth = initialDate.month.obs;
+    final rxSelectedYear = initialDate.year.obs;
+
+    return Get.dialog<DateTime?>(
+      Center(
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            width: Get.width * 0.85,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Obx(
+                  () => Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    color: const Color(0xFFF97316),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Thg ${rxSelectedMonth.value} ${rxSelectedYear.value}',
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                          ),
+                        ),
+                        sdsSBHeight8,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${rxSelectedYear.value}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_up,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () => rxSelectedYear.value++,
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () => rxSelectedYear.value--,
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(AppDimens.defaultPadding),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                    itemCount: 12,
+                    itemBuilder: (context, index) {
+                      final month = index + 1;
+                      return Obx(
+                        () {
+                          final isSelected = rxSelectedMonth.value == month;
+                          return InkWell(
+                            onTap: () => rxSelectedMonth.value = month,
+                            borderRadius: BorderRadius.circular(50),
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: isSelected
+                                    ? const Color(0xFFF97316)
+                                    : Colors.transparent,
+                              ),
+                              child: Text(
+                                'Thg $month',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: isSelected
+                                      ? Colors.white
+                                      : Colors.black87,
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+
+                // 3. Nút Hủy và Xác nhận
+                Padding(
+                  padding: const EdgeInsets.only(right: 16, bottom: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: Get.back,
+                        child: Text(
+                          'Hủy',
+                          style: TextStyle(
+                            color: AppColors.gray1,
+                          ),
+                        ),
+                      ),
+                      sdsSBWidth8,
+                      TextButton(
+                        onPressed: () {
+                          Get.back(
+                              result: DateTime(
+                                  rxSelectedYear.value, rxSelectedMonth.value));
+                        },
+                        child: const Text(
+                          'Xác nhận',
+                          style: TextStyle(
+                            color: Color(0xFFF97316),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

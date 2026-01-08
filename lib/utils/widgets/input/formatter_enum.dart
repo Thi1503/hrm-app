@@ -4,6 +4,7 @@ import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 
 import '../../../const/all_const.dart';
 import '../../../const/enum/input_formatter_enum.dart';
+import '../../formatter/date_full_input_formatter.dart';
 import '../../utils.dart';
 
 mixin FormatterEnum {
@@ -62,6 +63,11 @@ mixin FormatterEnum {
           FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9-_\.]')),
           LengthLimitingTextInputFormatter(
               inputTextFormModel.maxLengthInputForm),
+        ];
+      case InputFormatterEnum.dateFullBirthDay:
+        return [
+          FilteringTextInputFormatter.digitsOnly,
+          DateInputFormatter(),
         ];
       default:
         return [
