@@ -153,8 +153,8 @@ extension TimekeepingExplanationListWidget on TimekeepingExplanationListPage {
         'violation': 'Quên checkout',
         'reason':
             'Cuối ngày có cuộc họp khẩn cấp kéo dài nên khi về quên thực hiện checkout trên máy.',
-        'status': 'Đã duyệt',
-        'statusColor': Colors.green,
+        'status': 'Chờ nhân sự xác nhận',
+        'statusColor': Colors.blue,
       },
     ];
 
