@@ -6,7 +6,6 @@ import 'package:do_an_application/features/propose/register_leave/register_leave
 import 'package:do_an_application/utils/sized_box/sized_box.dart';
 import 'package:do_an_application/utils/widgets/app_select_image_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../../../const/enum/input_formatter_enum.dart';

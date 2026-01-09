@@ -37,7 +37,7 @@ extension TimekeepingExplanationListWidget on TimekeepingExplanationListPage {
     );
   }
 
-  // 2. Bộ lọc trạng thái và nút chức năng
+  // 2. Bộ lọc
   Widget _buildFilterHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -90,6 +90,7 @@ extension TimekeepingExplanationListWidget on TimekeepingExplanationListPage {
     );
   }
 
+  // 3. TAB CỦA TÔI: Giữ nguyên giao diện gốc (không có Tên NV)
   Widget _buildExplanationList() {
     final List<Map<String, dynamic>> mockData = [
       {
@@ -110,12 +111,48 @@ extension TimekeepingExplanationListWidget on TimekeepingExplanationListPage {
         'status': 'Đã duyệt',
         'statusColor': Colors.green,
       },
+    ];
+
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      itemCount: mockData.length,
+      itemBuilder: (context, index) =>
+          _buildExplanationCard(mockData[index], isApproverTab: false),
+    );
+  }
+
+  // 4. TAB TÔI DUYỆT: Cập nhật với 3 item
+  Widget _buildApproverList() {
+    final List<Map<String, dynamic>> approverData = [
       {
-        'title': 'Giải trình tháng 12/2025',
-        'date': '13/12/2025',
+        'title': 'Giải trình tháng 01/2026',
+        'employee': 'Lê Đình Thi',
+        'department': 'Phòng mobile',
+        'date': '02/01/2026',
         'violation': 'Quên checkin',
         'reason':
             'Quên mang thẻ nhân viên và ứng dụng trên điện thoại gặp sự cố kết nối mạng.',
+        'status': 'Chờ nhân sự xác nhận',
+        'statusColor': Colors.blue,
+      },
+      {
+        'title': 'Giải trình tháng 01/2026',
+        'employee': 'Nguyễn Văn A',
+        'department': 'Phòng mobile',
+        'date': '03/01/2026',
+        'violation': 'Đi muộn',
+        'reason': 'Xe bị hỏng lốp trên đường đi làm nên đến muộn 15 phút.',
+        'status': 'Chờ nhân sự xác nhận',
+        'statusColor': Colors.blue,
+      },
+      {
+        'title': 'Giải trình tháng 12/2025',
+        'employee': 'Trần Thị B',
+        'department': 'Phòng mobile',
+        'date': '25/12/2025',
+        'violation': 'Quên checkout',
+        'reason':
+            'Cuối ngày có cuộc họp khẩn cấp kéo dài nên khi về quên thực hiện checkout trên máy.',
         'status': 'Đã duyệt',
         'statusColor': Colors.green,
       },
@@ -123,12 +160,15 @@ extension TimekeepingExplanationListWidget on TimekeepingExplanationListPage {
 
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: mockData.length,
-      itemBuilder: (context, index) => _buildExplanationCard(mockData[index]),
+      itemCount: approverData.length,
+      itemBuilder: (context, index) =>
+          _buildExplanationCard(approverData[index], isApproverTab: true),
     );
   }
 
-  Widget _buildExplanationCard(Map<String, dynamic> data) {
+  // 5. Widget Card dùng chung
+  Widget _buildExplanationCard(Map<String, dynamic> data,
+      {required bool isApproverTab}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
@@ -145,6 +185,13 @@ extension TimekeepingExplanationListWidget on TimekeepingExplanationListPage {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
           const SizedBox(height: 8),
+
+          // Chỉ hiển thị Tên và Phòng ban khi là tab "Tôi duyệt"
+          if (isApproverTab) ...[
+            _buildInfoRow('Tên nhân viên:', data['employee'] ?? ''),
+            _buildInfoRow('Phòng ban:', data['department'] ?? ''),
+          ],
+
           _buildInfoRow('Ngày chấm công:', data['date'] ?? ''),
           _buildInfoRow('Loại giải trình:', data['violation'] ?? ''),
           _buildInfoRow('Lý do:', data['reason'] ?? ''),
@@ -169,6 +216,7 @@ extension TimekeepingExplanationListWidget on TimekeepingExplanationListPage {
     );
   }
 
+  // 6. Widget dòng thông tin chi tiết
   Widget _buildInfoRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
@@ -176,7 +224,7 @@ extension TimekeepingExplanationListWidget on TimekeepingExplanationListPage {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 120, // Độ rộng label để dóng hàng thẳng cột
+            width: 120,
             child: Text(
               label,
               style: const TextStyle(color: Colors.black54, fontSize: 13),

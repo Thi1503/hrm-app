@@ -29,8 +29,8 @@ class TimekeepingExplanationListPage
             Expanded(
               child: TabBarView(
                 children: [
-                  _buildExplanationList(),
-                  const Center(child: Text('Danh sách Tôi duyệt')),
+                  _buildExplanationList(), // Tab Của tôi (giữ nguyên)
+                  _buildApproverList(), // Tab Tôi duyệt (thêm thông tin NV)
                 ],
               ),
             ),
