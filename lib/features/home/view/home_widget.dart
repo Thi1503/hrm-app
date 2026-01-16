@@ -40,11 +40,14 @@ extension HomeWidget on HomePage {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        UtilWidgets.buildText(
-          'Xin chào,',
-          textColor: AppColors.colorWhite,
-          fontSize: AppDimens.fontBiggest(),
-          fontWeight: FontWeight.bold,
+        GestureDetector(
+          onDoubleTap: Diolog().showDiolog,
+          child: UtilWidgets.buildText(
+            'Xin chào,',
+            textColor: AppColors.colorWhite,
+            fontSize: AppDimens.fontBiggest(),
+            fontWeight: FontWeight.bold,
+          ),
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,

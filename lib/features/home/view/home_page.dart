@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/dio_log.dart';
+
 part 'home_widget.dart';
 
 class HomePage extends BaseGetWidget {

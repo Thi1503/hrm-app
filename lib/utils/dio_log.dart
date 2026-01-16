@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../base/requests/base_request.dart';
 
-const String kTriggerShowDioLog = "SDS_SHOW_LOG_EI";
+const String kTriggerShowDioLog = "SHOW_LOG";
 
 class Diolog {
   static final Diolog _instance = Diolog._();
