@@ -1,10 +1,13 @@
 import 'package:do_an_application/base/controllers/base_controller.dart';
 import 'package:do_an_application/routes/app_route.dart';
 import 'package:do_an_application/utils/form_key_ext.dart';
+import 'package:do_an_application/utils/logger.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../../application/app_controller.dart';
+import '../models/login_request.dart';
+import '../models/login_resoponse.dart';
 import '../repository/login_repository.dart';
 
 class LoginController extends BaseGetxController with WidgetsBindingObserver {
@@ -24,10 +27,43 @@ class LoginController extends BaseGetxController with WidgetsBindingObserver {
     super.onInit();
   }
 
-  void login() {
+  void login() async {
     autovalidateMode.value = AutovalidateMode.always;
     if (formKey.isValid) {
-      Get.toNamed(AppRoute.routeMain);
+      try {
+        showLoading();
+
+        final request = LoginRequest(
+          username: usernameTextCtrl.text.trim(),
+          password: passwordTextCtrl.text.trim(),
+        );
+
+        final response = await loginRepository.login(request);
+
+        if (response.isSuccess && response.data != null) {
+          final loginData = LoginResponse.fromJson(response.data);
+
+          // Lưu token vào HIVE_APP và parse thông tin user
+          await appController.saveToken(loginData.accessToken);
+
+          Get.offAllNamed(AppRoute.routeMain);
+        } else {
+          showSnackBar(response.message);
+        }
+      } catch (e) {
+        logger.e('Login error: $e');
+        showSnackBar('Đăng nhập thất bại. Vui lòng thử lại!');
+      } finally {
+        hideLoading();
+      }
     }
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    usernameTextCtrl.dispose();
+    passwordTextCtrl.dispose();
+    super.onClose();
   }
 }

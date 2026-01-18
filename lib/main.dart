@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:do_an_application/generated/locales.g.dart';
 import 'package:do_an_application/routes/app_router.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,6 +59,8 @@ class Application extends StatelessWidget {
       theme: getThemeByAppTheme(false),
       darkTheme: getThemeByAppTheme(),
       themeMode: AppColors.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
     );
   }
 }

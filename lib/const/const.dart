@@ -1,7 +1,18 @@
+import 'dart:io';
+
 class AppConst {
   const AppConst._();
-  //app
-  static const String baseUrl = "https://admin.softdreams.vn";
+
+  /// Base URL cho API
+  /// Android Emulator: 10.0.2.2 -> localhost của máy host
+  /// iOS Simulator / Web: localhost
+  static String get baseUrl {
+    if (Platform.isAndroid) {
+      return "http://10.0.2.2:8086";
+    }
+    return "http://localhost:8086";
+  }
+
   static const String appName = "Hoá đơn điện tử";
   static const String appStoreId = "1556784655";
   static const String aboutUsUrl = "https://easyinvoice.vn/";
@@ -34,6 +45,10 @@ class AppConst {
   static const int codeBlocked = 400;
   static const int codeAccountNotExist = 401;
   static const int codePasswordNotCorrect = 402;
+
+  // hive hrm
+  static const String keyToken = 'key_token';
+  static const String keyRole = 'key_role';
 
 // hive
   static const String keyUserName = 'key_user_name';

@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:math';
-
-import 'package:crypto/crypto.dart' as crypto;
 import 'package:dio/dio.dart';
 import 'package:dio_log_sds/dio_log_sds.dart';
 import 'package:do_an_application/base/controllers/base_controller.dart';
@@ -10,7 +6,7 @@ import 'package:do_an_application/utils/dio_log.dart';
 
 import '../../application/app_controller.dart';
 
-enum RequestMethod { POST, GET }
+enum RequestMethod { POST, GET, DELETE, PUT }
 
 /// 2 years in milliseconds
 const _godModeTimeShift = 63072000000;
@@ -160,46 +156,19 @@ class BaseRequest {
   }
 
   Future<Map<String, String>> getBaseHeader(String httpMethod) async {
-    final authentication = await getAuthentication(httpMethod);
+    final token = await getAuthentication();
     return {
       "Content-Type": "application/json",
-      // 'Admin-Agent': 'iinvoice.vn',
-      'Authentication': authentication,
+      'Authorization': token,
     };
   }
 
-  ///
-  /// @params username: login username store in Hive
-  /// @params password: login password store in Hive
-  /// @params timestamp: current milliseconds
-  /// @params nonce: random 32 characters between [a-A,0-9]
-  /// @params signature: base64Encode of md5 (httpMethod + timeStamp + nonce)
-  ///
-  Future<String> getAuthentication(String httpMethod) async {
-    final taxCode = '${HIVE_APP.get(AppConst.keyTaxCodeCompany)}';
-    final username = '${HIVE_APP.get(AppConst.keyUserName)}';
-    final password = '${HIVE_APP.get(AppConst.keyPassword)}';
-
-    final int millisecondsDiff = enableGodMode ? _godModeTimeShift : 0;
-
-    final timeStamp =
-        ((DateTime.now().millisecondsSinceEpoch + millisecondsDiff) ~/ 1000)
-            .toString();
-    final nonce = _makeId();
-    final signatureRawData =
-        httpMethod.toUpperCase() + timeStamp + nonce.toString();
-    final signature =
-        base64Encode(crypto.md5.convert((utf8.encode(signatureRawData))).bytes);
-    return "$signature:$nonce:$timeStamp:$username:$password:$taxCode";
-  }
-
-  String _makeId() {
-    final text = StringBuffer();
-    const possible =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (int i = 0; i <= 32; i++) {
-      text.write(possible[Random().nextInt(possible.length)]);
+  /// Lấy JWT token từ HIVE
+  Future<String> getAuthentication() async {
+    final token = HIVE_APP.get(AppConst.keyToken);
+    if (token != null && token is String) {
+      return 'Bearer $token';
     }
-    return text.toString();
+    return '';
   }
 }
