@@ -42,10 +42,11 @@ class LoginController extends BaseGetxController with WidgetsBindingObserver {
 
         if (response.isSuccess && response.data != null) {
           final loginData = LoginResponse.fromJson(response.data);
-          // Lưu token vào storage
-          // await appController.saveToken(loginData.accessToken);
 
-          Get.toNamed(AppRoute.routeMain);
+          // Lưu token vào HIVE_APP và parse thông tin user
+          await appController.saveToken(loginData.accessToken);
+
+          Get.offAllNamed(AppRoute.routeMain);
         } else {
           showSnackBar(response.message);
         }
