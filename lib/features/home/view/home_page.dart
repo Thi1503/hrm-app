@@ -2,6 +2,7 @@ import 'package:do_an_application/assets.dart';
 import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/const/colors.dart';
 import 'package:do_an_application/const/dimens.dart';
+import 'package:do_an_application/features/home/controller/home_controller.dart';
 import 'package:do_an_application/routes/app_route.dart';
 import 'package:do_an_application/utils/date_utils.dart';
 import 'package:do_an_application/utils/sized_box/sized_box.dart';
@@ -14,8 +15,12 @@ import '../../../utils/dio_log.dart';
 
 part 'home_widget.dart';
 
-class HomePage extends BaseGetWidget {
-  const HomePage({super.key});
+class HomePage extends BaseGetWidget<HomeController> {
+  @override
+  HomeController get controller => _controller;
+
+  late final _controller = Get.put(HomeController());
+  HomePage({super.key});
 
   @override
   Widget buildWidgets() {
