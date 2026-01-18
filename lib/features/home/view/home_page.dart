@@ -25,7 +25,7 @@ class HomePage extends BaseGetWidget<HomeController> {
   @override
   Widget buildWidgets() {
     return Scaffold(
-      body: _buildBody(),
+      body: buildLoadingOverlay(() => _buildBody()),
     );
   }
 }
