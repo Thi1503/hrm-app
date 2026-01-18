@@ -38,9 +38,12 @@ extension LoginWidget on LoginPage {
 
   Widget _buildLogo() {
     return Center(
-      child: Image.asset(
-        Assets.ASSETS_IMAGES_ICON_HRM_PNG,
-        width: Get.width / 2,
+      child: GestureDetector(
+        onDoubleTap: Diolog().showDiolog,
+        child: Image.asset(
+          Assets.ASSETS_IMAGES_ICON_HRM_PNG,
+          width: Get.width / 2,
+        ),
       ),
     ).paddingOnly(top: AppDimens.paddingSmall);
   }
@@ -92,7 +95,7 @@ extension LoginWidget on LoginPage {
     return UtilWidgets.buildSolidButton(
       title: 'Đăng nhập',
       height: AppDimens.btnLargeFigma,
-      onPressed:controller.login,
+      onPressed: controller.login,
     );
   }
 }
