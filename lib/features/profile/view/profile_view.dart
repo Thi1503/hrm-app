@@ -184,7 +184,7 @@ extension ProfileView on ProfilePage {
       ProfileListTile(
         icon: Icons.transgender,
         title: 'Giới tính',
-        subtitle: info.gender,
+        subtitle: info.gender.displayName,
       ),
       ProfileListTile(
         icon: Icons.badge_outlined,
