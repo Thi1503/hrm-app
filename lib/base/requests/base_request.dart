@@ -10,7 +10,7 @@ import 'package:do_an_application/utils/dio_log.dart';
 
 import '../../application/app_controller.dart';
 
-enum RequestMethod { POST, GET }
+enum RequestMethod { POST, GET, DELETE, PUT }
 
 /// 2 years in milliseconds
 const _godModeTimeShift = 63072000000;
