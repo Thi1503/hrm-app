@@ -67,14 +67,14 @@ extension HomeWidget on HomePage {
                 ),
               ),
               title: UtilWidgets.buildText(
-                controller.myInfoResponse.value?.fullName ?? 'Người dùng',
+                controller.appController.myInfoResponse.value?.fullName ?? 'Người dùng',
                 textColor: AppColors.colorWhite,
                 fontSize: AppDimens.fontBiggest(),
                 fontWeight: FontWeight.w500,
                 overflow: TextOverflow.ellipsis,
               ),
               subtitle: UtilWidgets.buildTextScale(
-                controller.myInfoResponse.value?.position ?? '',
+                controller.appController.myInfoResponse.value?.position ?? '',
                 textColor: AppColors.colorWhite.withOpacity(0.9),
                 fontSize: AppDimens.fontSmall(),
                 overflow: TextOverflow.ellipsis,

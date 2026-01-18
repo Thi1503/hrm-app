@@ -83,10 +83,10 @@ extension ProfileView on ProfilePage {
               size: 22,
             ),
             onPressed: () async {
-              if (controller.myInfoResponse.value != null) {
+              if (controller.appController.myInfoResponse.value != null) {
                 final result = await Get.toNamed(
                   AppRoute.routeUpdateAccountInfo,
-                  arguments: controller.myInfoResponse.value,
+                  arguments: controller.appController.myInfoResponse.value,
                 );
                 // Refresh data nếu update thành công
                 if (result == true) {
@@ -141,7 +141,7 @@ extension ProfileView on ProfilePage {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              controller.myInfoResponse.value?.fullName ?? 'Người dùng',
+              controller.appController.myInfoResponse.value?.fullName ?? 'Người dùng',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 22,
@@ -150,7 +150,7 @@ extension ProfileView on ProfilePage {
             ),
             const SizedBox(height: 4),
             Text(
-              controller.myInfoResponse.value?.jobPosition ?? '',
+              controller.appController.myInfoResponse.value?.jobPosition ?? '',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 15,
@@ -183,7 +183,7 @@ extension ProfileView on ProfilePage {
 
   // 3. Thông tin cơ bản (Dữ liệu khớp 100% ảnh)
   List<Widget> _buildBasicInfo() {
-    final info = controller.myInfoResponse.value;
+    final info = controller.appController.myInfoResponse.value;
     if (info == null) return [];
 
     return [
@@ -223,7 +223,7 @@ extension ProfileView on ProfilePage {
 
   // 4. Thông tin làm việc
   List<Widget> _buildWorkingInfo() {
-    final info = controller.myInfoResponse.value;
+    final info = controller.appController.myInfoResponse.value;
     if (info == null) return [];
 
     return [
