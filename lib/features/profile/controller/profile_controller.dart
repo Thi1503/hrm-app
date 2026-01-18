@@ -21,6 +21,12 @@ class ProfileController extends BaseGetxController
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+    // Reload data khi quay lại từ màn update
+  }
+
   Future<void> fetchMyInfo() async {
     try {
       showLoading();
@@ -37,5 +43,9 @@ class ProfileController extends BaseGetxController
     } finally {
       hideLoading();
     }
+  }
+
+  Future<void> refreshData() async {
+    await fetchMyInfo();
   }
 }

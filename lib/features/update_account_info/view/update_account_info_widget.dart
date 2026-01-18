@@ -3,26 +3,43 @@ part of 'update_account_info_page.dart';
 extension UpdateAccountInfoWidget on UpdateAccountInfoPage {
   // 2. Nội dung Form nhập liệu
   Widget _buildBody() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildBirthDayDate(),
-          sdsSBHeight8,
-          _buildDropdownField(
-            label: 'Giới tính',
-            isRequired: true,
-          ),
-          sdsSBHeight12,
-          _buildCCCD(),
-          sdsSBHeight12,
-          _buildPhoneNumber(),
-          sdsSBHeight12,
-          _buildEmail(),
-          sdsSBHeight12,
-          _buildAddressNow(),
-        ],
+    return Form(
+      key: controller.formKey,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildFullName(),
+            sdsSBHeight12,
+            _buildBirthDayDate(),
+            sdsSBHeight8,
+            _buildDropdownField(
+              label: 'Giới tính',
+              isRequired: true,
+            ),
+            sdsSBHeight12,
+            _buildCCCD(),
+            sdsSBHeight12,
+            _buildPhoneNumber(),
+            sdsSBHeight12,
+            _buildEmail(),
+            sdsSBHeight12,
+            _buildAddressNow(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFullName() {
+    return BuildInputTextWithLabel(
+      label: 'Họ và tên',
+      isRequired: true,
+      inputTextModel: InputTextModel(
+        controller: controller.nameCtrl,
+        hintText: 'Nhập họ và tên',
+        validator: (value) => controller.validateRequired(value, 'Họ và tên'),
       ),
     );
   }
@@ -34,6 +51,8 @@ extension UpdateAccountInfoWidget on UpdateAccountInfoPage {
       inputTextModel: InputTextModel(
         controller: controller.birthDayCtrl,
         hintText: PATTERN_1,
+        isReadOnly: true,
+        validator: (value) => controller.validateRequired(value, 'Ngày sinh'),
         suffixIcon: IconButton(
           onPressed: () async {
             final result = await UtilWidgets.buildDateTimePicker(
@@ -65,6 +84,7 @@ extension UpdateAccountInfoWidget on UpdateAccountInfoPage {
       inputTextModel: InputTextModel(
         controller: controller.idCardCtrl,
         hintText: 'Nhập cmnd/cccd',
+        validator: controller.validateIdCard,
       ),
     );
   }
@@ -77,6 +97,7 @@ extension UpdateAccountInfoWidget on UpdateAccountInfoPage {
       inputTextModel: InputTextModel(
         controller: controller.phoneCtrl,
         hintText: 'Nhập số điện thoại',
+        validator: controller.validatePhone,
       ),
     );
   }
@@ -89,6 +110,7 @@ extension UpdateAccountInfoWidget on UpdateAccountInfoPage {
       inputTextModel: InputTextModel(
         controller: controller.emailCtrl,
         hintText: 'Nhập email',
+        validator: controller.validateEmail,
       ),
     );
   }
@@ -160,14 +182,15 @@ extension UpdateAccountInfoWidget on UpdateAccountInfoPage {
             color: const Color(0xFFF3F4F6), // Nền xám nhẹ cho dropdown
           ),
           child: DropdownButtonHideUnderline(
-            child: Obx(() => DropdownButton<String>(
+            child: Obx(() => DropdownButton<Gender>(
                   isExpanded: true,
                   value: controller.selectedGender.value,
                   icon: const Icon(Icons.arrow_drop_down, color: Colors.orange),
                   items: controller.genders
                       .map((e) => DropdownMenuItem(
                           value: e,
-                          child: Text(e, style: const TextStyle(fontSize: 14))))
+                          child: Text(e.displayName,
+                              style: const TextStyle(fontSize: 14))))
                       .toList(),
                   onChanged: (val) {
                     if (val != null) controller.selectedGender.value = val;

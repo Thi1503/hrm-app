@@ -1,5 +1,6 @@
 import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/base/widgets/base_app_bar.dart';
+import 'package:do_an_application/features/profile/models/gender_enum.dart';
 import 'package:do_an_application/utils/sized_box/sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

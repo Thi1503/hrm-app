@@ -82,7 +82,18 @@ extension ProfileView on ProfilePage {
               color: Colors.white,
               size: 22,
             ),
-            onPressed: () => Get.toNamed(AppRoute.routeUpdateAccountInfo),
+            onPressed: () async {
+              if (controller.myInfoResponse.value != null) {
+                final result = await Get.toNamed(
+                  AppRoute.routeUpdateAccountInfo,
+                  arguments: controller.myInfoResponse.value,
+                );
+                // Refresh data nếu update thành công
+                if (result == true) {
+                  controller.refreshData();
+                }
+              }
+            },
           ),
         ],
       ),
