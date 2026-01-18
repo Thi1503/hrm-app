@@ -1,7 +1,7 @@
 class AppConst {
   const AppConst._();
   //app
-  static const String baseUrl = "https://admin.softdreams.vn";
+  static const String baseUrl = "http://localhost:8086";
   static const String appName = "Hoá đơn điện tử";
   static const String appStoreId = "1556784655";
   static const String aboutUsUrl = "https://easyinvoice.vn/";
