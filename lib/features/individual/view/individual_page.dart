@@ -27,8 +27,7 @@ class IndividualPage extends BaseGetWidget<IndividualController> {
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {
-              // Logic đăng xuất chuyển về màn Login
-              Get.offAllNamed(AppRoute.routeLogin);
+              controller.logout();
             },
           ),
         ],
