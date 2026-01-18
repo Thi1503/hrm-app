@@ -46,6 +46,10 @@ class AppConst {
   static const int codeAccountNotExist = 401;
   static const int codePasswordNotCorrect = 402;
 
+  // hive hrm
+  static const String keyToken = 'key_token';
+  static const String keyRole = 'key_role';
+
 // hive
   static const String keyUserName = 'key_user_name';
   static const String keyShowIntro = 'key_show_intro';
