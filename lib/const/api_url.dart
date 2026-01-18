@@ -6,4 +6,5 @@ class ApiUrl {
 
   //Employee Service
   static const String urlGetMyInfo = '/employee/employees/my-info';
+  static const String urlUpdateMyInfo = '/employee/employees/update-my-info';
 }

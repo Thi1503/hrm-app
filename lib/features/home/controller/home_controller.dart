@@ -9,8 +9,6 @@ class HomeController extends BaseGetxController {
   late final HomeRepository repository = HomeRepository(this);
   AppController appController = Get.find<AppController>();
 
-  final myInfoResponse = Rxn<MyInfoResponse>();
-
   @override
   void onInit() {
     fetchMyInfo();
@@ -25,7 +23,8 @@ class HomeController extends BaseGetxController {
       final response = await repository.getMyInfo();
 
       if (response.isSuccess && response.data != null) {
-        myInfoResponse.value = MyInfoResponse.fromJson(response.data);
+        appController.myInfoResponse.value =
+            MyInfoResponse.fromJson(response.data);
       } else {
         showSnackBar(response.message);
       }
