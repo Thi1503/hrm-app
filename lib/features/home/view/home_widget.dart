@@ -37,52 +37,52 @@ extension HomeWidget on HomePage {
   }
 
   Widget _buildStaffProfile() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onDoubleTap: Diolog().showDiolog,
-          child: UtilWidgets.buildText(
-            'Xin chào,',
-            textColor: AppColors.colorWhite,
-            fontSize: AppDimens.fontBiggest(),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: Container(
-            width: AppDimens.sizeImage,
-            height: AppDimens.sizeImage,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              border: Border.all(color: Colors.white, width: 1.5),
-              shape: BoxShape.circle,
-            ),
-            child: ClipOval(
-              child: Image.asset(
-                Assets.ASSETS_IMAGES_IMAGE_DEFAULT_JPG,
-                fit: BoxFit.cover,
+    return Obx(() => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onDoubleTap: Diolog().showDiolog,
+              child: UtilWidgets.buildText(
+                'Xin chào,',
+                textColor: AppColors.colorWhite,
+                fontSize: AppDimens.fontBiggest(),
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-          title: UtilWidgets.buildText(
-            'Lê Đình Thi',
-            textColor: AppColors.colorWhite,
-            fontSize: AppDimens.fontBiggest(),
-            fontWeight: FontWeight.w500,
-            overflow: TextOverflow.ellipsis,
-          ),
-          subtitle: UtilWidgets.buildTextScale(
-            'Lập trình viên HDDT',
-            textColor: AppColors.colorWhite.withOpacity(0.9),
-            fontSize: AppDimens.fontSmall(),
-            overflow: TextOverflow.ellipsis,
-          ).paddingOnly(top: 4),
-          onTap: () => Get.toNamed(AppRoute.routeProfile),
-        ),
-      ],
-    );
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Container(
+                width: AppDimens.sizeImage,
+                height: AppDimens.sizeImage,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  border: Border.all(color: Colors.white, width: 1.5),
+                  shape: BoxShape.circle,
+                ),
+                child: ClipOval(
+                  child: Image.asset(
+                    Assets.ASSETS_IMAGES_IMAGE_DEFAULT_JPG,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              title: UtilWidgets.buildText(
+                controller.myInfoResponse.value?.fullName ?? 'Người dùng',
+                textColor: AppColors.colorWhite,
+                fontSize: AppDimens.fontBiggest(),
+                fontWeight: FontWeight.w500,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: UtilWidgets.buildTextScale(
+                controller.myInfoResponse.value?.position ?? '',
+                textColor: AppColors.colorWhite.withOpacity(0.9),
+                fontSize: AppDimens.fontSmall(),
+                overflow: TextOverflow.ellipsis,
+              ).paddingOnly(top: 4),
+              onTap: () => Get.toNamed(AppRoute.routeProfile),
+            ),
+          ],
+        ));
   }
 
   Widget _buildTimekeepingTable() {
