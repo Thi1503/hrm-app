@@ -8,8 +8,8 @@ extension ProfileView on ProfilePage {
         physics: const NeverScrollableScrollPhysics(),
         controller: controller.tabCtrl,
         children: [
-          _buildInfo(_buildBasicInfo()),
-          _buildInfo(_buildWorkingInfo()),
+          Obx(() => _buildInfo(_buildBasicInfo())),
+          Obx(() => _buildInfo(_buildWorkingInfo())),
         ],
       ),
     );
@@ -126,27 +126,27 @@ extension ProfileView on ProfilePage {
   }
 
   Widget _buildNameAndJob() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Lê Đình Thi',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 4),
-        const Text(
-          'Lập trình viên HDDT',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 15,
-          ),
-        ),
-      ],
-    );
+    return Obx(() => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              controller.myInfoResponse.value?.fullName ?? 'Người dùng',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              controller.myInfoResponse.value?.jobPosition ?? '',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+          ],
+        ));
   }
 
   // 2. TabBar
@@ -172,36 +172,39 @@ extension ProfileView on ProfilePage {
 
   // 3. Thông tin cơ bản (Dữ liệu khớp 100% ảnh)
   List<Widget> _buildBasicInfo() {
+    final info = controller.myInfoResponse.value;
+    if (info == null) return [];
+
     return [
       ProfileListTile(
         icon: Icons.calendar_today_outlined,
         title: 'Ngày sinh',
-        subtitle: '10/08/2002',
+        subtitle: formatDateTimeToString(info.dateOfBirth),
       ),
       ProfileListTile(
         icon: Icons.transgender,
         title: 'Giới tính',
-        subtitle: 'Nam',
+        subtitle: info.gender,
       ),
       ProfileListTile(
         icon: Icons.badge_outlined,
         title: 'CMND/CCCD',
-        subtitle: '025202008581',
+        subtitle: info.idNumber,
       ),
       ProfileListTile(
         icon: Icons.phone_android_outlined,
         title: 'Số điện thoại',
-        subtitle: '0384257775',
+        subtitle: info.phone,
       ),
       ProfileListTile(
         icon: Icons.email_outlined,
         title: 'Email',
-        subtitle: 'ledinhthi2k3@gmail.com',
+        subtitle: info.personalEmail,
       ),
       ProfileListTile(
         icon: Icons.location_on_outlined,
         title: 'Địa chỉ hiện tại',
-        subtitle: 'Thường Tín, Hà Nội',
+        subtitle: info.address,
       ),
       const SizedBox(height: 20),
     ];
@@ -209,36 +212,39 @@ extension ProfileView on ProfilePage {
 
   // 4. Thông tin làm việc
   List<Widget> _buildWorkingInfo() {
+    final info = controller.myInfoResponse.value;
+    if (info == null) return [];
+
     return [
       ProfileListTile(
         icon: Icons.person_pin_outlined,
         title: 'Mã nhân viên',
-        subtitle: 'NS0433',
+        subtitle: info.employeeCode,
       ),
       ProfileListTile(
         icon: Icons.account_tree_outlined,
         title: 'Phòng ban',
-        subtitle: 'Phòng phần mềm mobile',
+        subtitle: info.department,
       ),
       ProfileListTile(
         icon: Icons.work_history_outlined,
         title: 'Chức danh',
-        subtitle: 'Lập trình viên HDDT',
+        subtitle: info.position,
       ),
       ProfileListTile(
         icon: Icons.timeline_outlined,
         title: 'Thâm niên',
-        subtitle: '4 tháng, 20 ngày',
+        subtitle: info.seniority,
       ),
       ProfileListTile(
         icon: Icons.business_outlined,
         title: 'Email công ty',
-        subtitle: 'thild@softdreams.vn',
+        subtitle: info.companyEmail,
       ),
       ProfileListTile(
         icon: Icons.event_available_outlined,
         title: 'Ngày vào công ty',
-        subtitle: '21/05/2024',
+        subtitle: formatDateTimeToString(info.joinDate),
       ),
       const SizedBox(height: 20),
     ];
