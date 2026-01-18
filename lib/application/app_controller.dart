@@ -48,8 +48,14 @@ class AppController extends GetxController {
     _initLocalData();
     _initBaseService();
 
-    /// Điều hướng SAU KHI UI SPLASH ĐÃ SẴN SÀNG
-    Get.offAllNamed(AppRoute.routeLogin);
+    /// Kiểm tra token và điều hướng
+    if (isTokenValid()) {
+      // Token còn hạn, vào màn hình chính
+      Get.offAllNamed(AppRoute.routeMain);
+    } else {
+      // Token hết hạn hoặc không có, vào màn hình login
+      Get.offAllNamed(AppRoute.routeLogin);
+    }
   }
 
   Future<void> _initHive() async {
@@ -67,6 +73,7 @@ class AppController extends GetxController {
 
   void _initLocalData() {
     isFaceID.value = APP_DATA.read(AppConst.keyFingerprint) ?? false;
+    loadSavedToken();
   }
 
   void _initBaseService() {
@@ -115,6 +122,14 @@ class AppController extends GetxController {
       employeeId.value = JwtHelper.getEmployeeId(savedToken);
       permissions.value = JwtHelper.getPermissions(savedToken);
     }
+  }
+
+  /// Kiểm tra xem token có hợp lệ và còn hạn không
+  bool isTokenValid() {
+    final savedToken = accessToken.value;
+    return savedToken != null &&
+        savedToken.isNotEmpty &&
+        !JwtHelper.isTokenExpired(savedToken);
   }
 
   /// Xóa token khi logout
