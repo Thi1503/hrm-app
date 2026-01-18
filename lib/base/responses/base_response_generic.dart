@@ -1,16 +1,14 @@
-import 'package:do_an_application/const/const.dart';
-
 class BaseResponseGeneric<T> {
-  final int status;
+  final bool success;
+  final String? code;
   final String message;
   final T? data;
-  final int? errorCode;
 
   const BaseResponseGeneric({
-    required this.status,
+    required this.success,
+    this.code,
     required this.message,
     this.data,
-    this.errorCode,
   });
 
   factory BaseResponseGeneric.fromJson(
@@ -18,14 +16,23 @@ class BaseResponseGeneric<T> {
     T Function(dynamic x)? func,
     String? dataKey,
   }) {
-    final jsonData = json[dataKey ?? 'Data'];
+    final key = dataKey ?? 'data';
+    final jsonData = json.containsKey(key) ? json[key] : json['Data'];
     return BaseResponseGeneric(
-      status: json['Status'] ?? 0,
-      message: json['Message'] ?? '',
+      success: json['success'] == true || (json['Status'] == 2),
+      code: (json['code'] as String?) ?? (json['ErrorCode']?.toString()),
+      message:
+          (json['message'] as String?) ?? (json['Message'] as String?) ?? '',
       data: jsonData != null && func != null ? func(jsonData) : jsonData,
-      errorCode: json['ErrorCode'] ?? 0,
     );
   }
 
-  bool get isSuccess => status == AppConst.responseSuccess;
+  bool get isSuccess => success;
+
+  Map<String, dynamic> toJson() => {
+        'success': success,
+        'code': code,
+        'message': message,
+        'data': data,
+      };
 }

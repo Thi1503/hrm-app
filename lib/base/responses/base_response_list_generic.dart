@@ -1,14 +1,14 @@
 class BaseResponseListGeneric<T> {
-  final int status;
+  final bool success;
+  final String? code;
   final String message;
   final List<T> data;
-  final int? errorCode;
 
   const BaseResponseListGeneric({
-    required this.status,
+    required this.success,
+    this.code,
     required this.message,
     required this.data,
-    this.errorCode,
   });
 
   factory BaseResponseListGeneric.fromJson(
@@ -16,14 +16,35 @@ class BaseResponseListGeneric<T> {
     T Function(dynamic x)? func,
     String? dataKey,
   }) {
-    final jsonData = json[dataKey ?? 'Data'];
+    final key = dataKey ?? 'data';
+    final raw = json.containsKey(key) ? json[key] : json['Data'];
+
+    List<T> parsed;
+    if (raw is List) {
+      if (func != null) {
+        parsed = List<T>.from(raw.map((x) => func(x)));
+      } else {
+        parsed = <T>[];
+      }
+    } else {
+      parsed = <T>[];
+    }
+
     return BaseResponseListGeneric(
-      status: json['Status'] ?? 0,
-      message: json['Message'] ?? '',
-      data: jsonData != null && func != null
-          ? List<T>.from(jsonData.map((x) => func(x)))
-          : <T>[],
-      errorCode: json['ErrorCode'],
+      success: json['success'] == true || (json['Status'] == 2),
+      code: (json['code'] as String?) ?? (json['ErrorCode']?.toString()),
+      message:
+          (json['message'] as String?) ?? (json['Message'] as String?) ?? '',
+      data: parsed,
     );
   }
+
+  bool get isSuccess => success;
+
+  Map<String, dynamic> toJson() => {
+        'success': success,
+        'code': code,
+        'message': message,
+        'data': data,
+      };
 }
