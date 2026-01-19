@@ -12,6 +12,11 @@ class ApiUrl {
   static const String urlGetMyLogs = '/attendance/attendance/my-logs';
 
   // Request Approval Service
+  static const String urlRejectRequest = '/request-approval/approvals/reject';
+  static const String urlManagerApproveRequest =
+      '/request-approval/approvals/manager/approve';
+  static const String urlHrApproveRequest =
+      '/request-approval/approvals/hr/approve';
   static const String urlGetMyLeaveRequests =
       '/request-approval/leave-requests/list';
   static const String urlGetManagerLeaveRequests =
