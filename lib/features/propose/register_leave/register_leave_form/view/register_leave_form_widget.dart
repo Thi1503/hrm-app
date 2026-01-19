@@ -20,6 +20,7 @@ extension RegisterLeaveFormWidget on RegisterLeaveFormPage {
           sdsSBHeight12,
 
           // Tổng số ngày nghỉ
+          //UI tính và hiển thị thôi
           _buildCountDayLeave(),
           sdsSBHeight12,
 
@@ -27,8 +28,9 @@ extension RegisterLeaveFormWidget on RegisterLeaveFormPage {
           _buildReasonInput(),
           sdsSBHeight12,
 
-          _buildLabelInput(label: 'File minh chứng'),
-          _buildSelectUploadFile(),
+          //tạm thời bỏ ko upload file
+          // _buildLabelInput(label: 'File minh chứng'),
+          // _buildSelectUploadFile(),
         ],
       ),
     );
@@ -98,10 +100,10 @@ extension RegisterLeaveFormWidget on RegisterLeaveFormPage {
     // 1. Mock danh sách loại nghỉ
     final List<String> leaveTypes = [
       'Nghỉ phép năm',
-      'Nghỉ ốm/đau',
+      'Nghỉ ốm',
       'Nghỉ không lương',
-      'Nghỉ chế độ (Thai sản/Kết hôn)',
-      'Nghỉ bù',
+      'Nghỉ chế độ',
+      'Khác',
     ];
 
     return Column(
@@ -158,17 +160,33 @@ extension RegisterLeaveFormWidget on RegisterLeaveFormPage {
   }
 
   Widget _buildCountDayLeave() {
-    return BuildInputTextWithLabel(
-      label: 'Tổng số ngày nghỉ',
-      isRequired: true,
-      inputTextModel: InputTextModel(
-        controller: controller.countDayLeaveCtrl,
-        isReadOnly: true,
-        hintText: '0.0',
-        focusedBorder: _outlineInputBorder(),
-        focusedErrorBorder: _outlineInputBorder(),
-        enabledBorder: _outlineInputBorder(),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildLabelInput(
+          label: 'Tổng số ngày nghỉ',
+          isRequired: true,
+        ),
+        Obx(() {
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.grey.shade300),
+              color: Colors.grey.shade50,
+            ),
+            width: double.infinity,
+            child: Text(
+              controller.totalDays.value,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black87,
+              ),
+            ),
+          );
+        }),
+        sdsSBHeight8,
+      ],
     );
   }
 
@@ -200,7 +218,7 @@ extension RegisterLeaveFormWidget on RegisterLeaveFormPage {
             child: _buildButton(
               'Gửi phê duyệt',
               const Color(0xFFF97316),
-              () {},
+              () => controller.submitLeaveRequest(),
             ),
           ),
         ],
