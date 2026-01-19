@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:do_an_application/const/const.dart';
 import 'package:do_an_application/const/string_value.dart';
 import 'package:do_an_application/features/login/models/roles_enum.dart';
+import 'package:do_an_application/features/profile/models/my_info_response.dart';
 import 'package:do_an_application/routes/app_route.dart';
 import 'package:do_an_application/utils/jwt_helper.dart';
 import 'package:get/get.dart';
@@ -35,6 +36,9 @@ class AppController extends GetxController {
   final Rxn<String> employeeName = Rxn<String>();
   final Rxn<int> employeeId = Rxn<int>();
   final RxList<String> permissions = <String>[].obs;
+
+  // Thông tin chi tiết user
+  final Rxn<MyInfoResponse> myInfoResponse = Rxn<MyInfoResponse>();
 
   @override
   void onReady() {

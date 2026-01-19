@@ -1,9 +1,11 @@
+import 'package:do_an_application/features/profile/models/gender_enum.dart';
+
 class MyInfoResponse {
   final int id;
   final String fullName;
   final String jobPosition;
   final DateTime dateOfBirth;
-  final String gender;
+  final Gender gender;
   final String idNumber;
   final String phone;
   final String personalEmail;
@@ -41,7 +43,7 @@ class MyInfoResponse {
       fullName: json['fullName'] ?? "",
       jobPosition: json['jobPosition'] ?? "",
       dateOfBirth: DateTime.parse(json['dateOfBirth']),
-      gender: json['gender'] ?? "",
+      gender: Gender.fromValue(json['gender']) ?? Gender.other,
       idNumber: json['idNumber'] ?? "",
       phone: json['phone'] ?? "",
       personalEmail: json['personalEmail'] ?? "",

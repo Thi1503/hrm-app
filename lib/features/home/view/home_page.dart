@@ -3,6 +3,7 @@ import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/const/colors.dart';
 import 'package:do_an_application/const/dimens.dart';
 import 'package:do_an_application/features/home/controller/home_controller.dart';
+import 'package:do_an_application/features/home/models/attendance_log.dart';
 import 'package:do_an_application/routes/app_route.dart';
 import 'package:do_an_application/utils/date_utils.dart';
 import 'package:do_an_application/utils/sized_box/sized_box.dart';
