@@ -34,6 +34,7 @@ extension RegisterManagerLeavesWidget on RegisterLeavePage {
           AppRoute.routeRegisterLeaveDetail,
           arguments: RegisterLeaveDetailArgument(
             registerId: item.requestId,
+            employeeName: item.employeeName,
           ),
         );
       },

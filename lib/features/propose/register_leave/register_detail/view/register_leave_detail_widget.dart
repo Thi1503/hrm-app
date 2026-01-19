@@ -15,7 +15,8 @@ extension RegisterLeaveDetailWidget on RegisterLeaveDetailPage {
           children: [
             _buildInfoRow('Trạng thái:', _buildStatusChip(detail.status)),
             SizedBox(height: AppDimens.defaultPadding),
-            _buildInfoRow('Tạo bởi:', const Text('Tôi')),
+            _buildInfoRow(
+                'Tạo bởi:', Text(controller.argument.employeeName ?? 'Tôi')),
             SizedBox(height: AppDimens.defaultPadding),
             _buildInfoRow(
               'Nghỉ từ ngày:',
