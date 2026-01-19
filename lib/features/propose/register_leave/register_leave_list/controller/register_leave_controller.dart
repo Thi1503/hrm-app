@@ -1,4 +1,6 @@
+import 'package:do_an_application/application/app_controller.dart';
 import 'package:do_an_application/base/base.dart';
+import 'package:do_an_application/features/login/models/roles_enum.dart';
 import 'package:do_an_application/features/propose/register_leave/register_leave_list/models/leave_request_item.dart';
 import 'package:do_an_application/features/propose/register_leave/register_leave_list/repository/register_leave_list_repository.dart';
 import 'package:do_an_application/utils/logger.dart';
@@ -6,6 +8,8 @@ import 'package:get/get.dart';
 
 class RegisterLeaveController extends BaseGetxController {
   late final RegisterLeaveListRepository _repository;
+  AppController appController = Get.find<AppController>();
+  final role = UserRole.employee.obs;
 
   final RxList<LeaveRequestItem> leaveRequests = <LeaveRequestItem>[].obs;
   final RxString selectedStatus = 'Tất cả'.obs;
@@ -14,6 +18,7 @@ class RegisterLeaveController extends BaseGetxController {
   void onInit() {
     super.onInit();
     _repository = RegisterLeaveListRepository(this);
+    role.value = appController.currentUserRole.value;
     fetchLeaveRequests();
   }
 

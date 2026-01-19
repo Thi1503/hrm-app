@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 part 'register_leave_widget.dart';
+part 'register_my_leaves_widget.dart';
 
 class RegisterLeavePage extends BaseGetWidget<RegisterLeaveController> {
   RegisterLeaveController get controller => _controller;
@@ -23,14 +24,14 @@ class RegisterLeavePage extends BaseGetWidget<RegisterLeaveController> {
       length: 2,
       child: Scaffold(
         backgroundColor: const Color(0xFFF8F9FA),
-        appBar: _buildAppBar(),
+        appBar: buildAppBar(),
         body: Column(
           children: [
-            _buildFilterHeader(),
+            buildFilterHeader(),
             Expanded(
               child: TabBarView(
                 children: [
-                  _buildLeaveList(),
+                  buildLeaveList(),
                   const Center(
                     child: Text(
                       'Danh sách Tôi duyệt',
