@@ -67,7 +67,8 @@ extension HomeWidget on HomePage {
                 ),
               ),
               title: UtilWidgets.buildText(
-                controller.appController.myInfoResponse.value?.fullName ?? 'Người dùng',
+                controller.appController.myInfoResponse.value?.fullName ??
+                    'Người dùng',
                 textColor: AppColors.colorWhite,
                 fontSize: AppDimens.fontBiggest(),
                 fontWeight: FontWeight.w500,
@@ -220,12 +221,40 @@ extension HomeWidget on HomePage {
   }
 
   Widget buildStatusHistory() {
-    return SizedBox(
+    return Obx(() {
+      if (controller.myLogs.isEmpty) {
+        return SizedBox(
+          height: 60,
+          child: UtilWidgets.buildCardBase(
+            Center(
+              child: UtilWidgets.buildText(
+                'Chưa có lịch sử chấm công',
+                textColor: AppColors.colorBlack.withOpacity(0.5),
+                fontSize: AppDimens.fontSmall(),
+              ),
+            ),
+            radius: AppDimens.radius13,
+          ),
+        );
+      }
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: controller.myLogs.map((log) => _buildLogItem(log)).toList(),
+      );
+    });
+  }
+
+  Widget _buildLogItem(AttendanceLog log) {
+    return Container(
+      margin: EdgeInsets.only(bottom: AppDimens.paddingSmall),
       height: 60,
       child: Row(
         children: [
           Container(
-            color: AppColors.primaryLight2,
+            color: log.validLocation
+                ? AppColors.primaryLight2
+                : AppColors.colorRed,
             width: 6,
           ),
           Expanded(
@@ -243,10 +272,16 @@ extension HomeWidget on HomePage {
                     Assets.ASSETS_ICONS_ICON_CLOCK_HISTORY_SVG,
                     fit: BoxFit.cover,
                   ).paddingAll(AppDimens.paddingSearchBarSmall),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [_buildDate(), sdsSBWidth4, _buildStatus()],
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildLogDateTime(log),
+                        sdsSBHeight4,
+                        _buildLogStatus(log),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -257,7 +292,7 @@ extension HomeWidget on HomePage {
     );
   }
 
-  Widget _buildDate() {
+  Widget _buildLogDateTime(AttendanceLog log) {
     return Row(
       children: [
         UtilWidgets.buildText(
@@ -266,15 +301,19 @@ extension HomeWidget on HomePage {
           fontSize: AppDimens.fontSmall(),
         ),
         UtilWidgets.buildText(
-          convertDateToString(DateTime(2026, 01, 06, 07, 59), PATTERN_11),
+          convertDateToString(log.checkTime, PATTERN_11),
           textColor: AppColors.colorBlack,
           fontSize: AppDimens.fontSmall(),
+          fontWeight: FontWeight.bold,
         ),
       ],
     );
   }
 
-  Widget _buildStatus() {
+  Widget _buildLogStatus(AttendanceLog log) {
+    final isSuccess = log.validLocation;
+    final statusColor = isSuccess ? AppColors.color0B8E3F : AppColors.colorRed;
+
     return Row(
       children: [
         UtilWidgets.buildText(
@@ -283,9 +322,10 @@ extension HomeWidget on HomePage {
           fontSize: AppDimens.fontSmall(),
         ),
         UtilWidgets.buildText(
-          'Thành công',
+          '${log.checkType.displayName} - ${isSuccess ? 'Thành công' : 'Thất bại'}',
           fontSize: AppDimens.fontSmall(),
-          textColor: AppColors.color0B8E3F,
+          textColor: statusColor,
+          fontWeight: FontWeight.bold,
         ),
       ],
     );
