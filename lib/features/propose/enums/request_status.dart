@@ -1,6 +1,6 @@
 enum RequestStatus {
   pendingManager('PENDING_MANAGER', 'Chờ quản lý duyệt'),
-  pendingHR('PENDING_HR', 'Chờ HR duyệt'),
+  pendingHR('PENDING_HR', 'Chờ nhân sự duyệt'),
   approved('APPROVED', 'Đã duyệt'),
   rejected('REJECTED', 'Từ chối'),
   cancelled('CANCLE', 'Đã hủy');

@@ -28,12 +28,12 @@ class LeaveRequestItem {
 
   factory LeaveRequestItem.fromJson(Map<String, dynamic> json) {
     return LeaveRequestItem(
-      id: json['id'] ?? 0,
-      employeeId: json['employeeId'] ?? 0,
+      id: (json['id'] ?? 0).toInt(),
+      employeeId: (json['employeeId'] ?? 0).toInt(),
       leaveType: LeaveType.fromValue(json['leaveType']),
       fromDate: DateTime.parse(json['fromDate']),
       toDate: DateTime.parse(json['toDate']),
-      totalDays: json['totalDays'] ?? 0,
+      totalDays: (json['totalDays'] ?? 0).toInt(),
       reason: json['reason'] ?? '',
       attachmentUrl: json['attachmentUrl'] ?? '',
       status: RequestStatus.fromValue(json['status']),

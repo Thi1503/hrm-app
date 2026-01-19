@@ -10,4 +10,8 @@ class ApiUrl {
 
   // Attendance Service
   static const String urlGetMyLogs = '/attendance/attendance/my-logs';
+
+  // Request Approval Service
+  static const String urlGetMyRequests =
+      '/request-approval/leave-requests/list';
 }
