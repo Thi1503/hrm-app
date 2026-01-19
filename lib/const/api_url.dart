@@ -14,4 +14,7 @@ class ApiUrl {
   // Request Approval Service
   static const String urlGetMyRequests =
       '/request-approval/leave-requests/list';
+
+  static String urlGetLeaveRequestDetail(int id) =>
+      '/request-approval/leave-requests/detail/$id';
 }
