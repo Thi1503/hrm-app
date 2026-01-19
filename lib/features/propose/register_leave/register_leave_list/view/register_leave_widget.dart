@@ -53,25 +53,38 @@ extension RegisterLeaveWidget on RegisterLeavePage {
         children: [
           const Text('Trạng thái: ', style: TextStyle(color: Colors.black54)),
           Expanded(
-            child: Container(
-              height: 40,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: 'Tất cả',
-                  items: ['Tất cả', 'Đã duyệt', 'Chờ duyệt', 'Hủy']
-                      .map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value, style: const TextStyle(fontSize: 14)),
-                    );
-                  }).toList(),
-                  onChanged: (_) {},
+            child: Obx(
+              () => Container(
+                height: 40,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: controller.selectedStatus.value,
+                    items: [
+                      'Tất cả',
+                      'Chờ quản lý duyệt',
+                      'Chờ nhân sự duyệt',
+                      'Đã duyệt',
+                      'Từ chối',
+                      'Đã hủy'
+                    ].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child:
+                            Text(value, style: const TextStyle(fontSize: 14)),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        controller.updateStatusFilter(value);
+                      }
+                    },
+                  ),
                 ),
               ),
             ),
@@ -79,7 +92,7 @@ extension RegisterLeaveWidget on RegisterLeavePage {
           const SizedBox(width: 10),
           _buildActionButton(
             icon: Icons.add,
-            onTap: () => Get.toNamed(AppRoute.routeRegisterLeaveDetail),
+            onTap: () => Get.toNamed(AppRoute.routeRegisterLeaveForm),
             color: Color(0xFFF97316),
           ),
         ],
@@ -103,91 +116,93 @@ extension RegisterLeaveWidget on RegisterLeavePage {
   }
 
   Widget _buildLeaveList() {
-    final List<Map<String, dynamic>> mockData = [
-      {
-        'title': 'Xin nghỉ phép tháng 12/2025',
-        'leaveType': 'Nghỉ phép năm',
-        'startDate': '22/12/2025', // Trường mới
-        'endDate': '23/12/2025', // Trường mới
-        'reason': 'Em về quê có việc gia đình ạ',
-        'status': 'Đã duyệt',
-        'statusColor': Colors.green,
-      },
-      {
-        'title': 'Xin nghỉ phép tháng 12/2025',
-        'leaveType': 'Nghỉ ốm',
-        'startDate': '15/12/2025',
-        'endDate': '15/12/2025',
-        'reason': 'Sốt xuất huyết cần điều trị',
-        'status': 'Chờ quản lý duyệt',
-        'statusColor': Colors.orange,
-      },
-      {
-        'title': 'Xin nghỉ phép tháng 12/2025',
-        'leaveType': 'Nghỉ không lương',
-        'startDate': '10/12/2025',
-        'endDate': '12/12/2025',
-        'reason': 'Giải quyết việc cá nhân quan trọng',
-        'status': 'Chờ nhân sự duyệt',
-        'statusColor': Colors.blue,
-      },
-    ];
+    return Obx(() {
+      final filteredRequests = controller.filteredRequests;
 
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: mockData.length,
-      itemBuilder: (context, index) => _buildLeaveCard(mockData[index]),
+      if (filteredRequests.isEmpty) {
+        return const Center(
+          child: Text(
+            'Không có đơn nghỉ phép nào',
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+        );
+      }
+
+      return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: filteredRequests.length,
+        itemBuilder: (context, index) =>
+            _buildLeaveCard(filteredRequests[index]),
+      );
+    });
+  }
+
+  Widget _buildLeaveCard(LeaveRequestItem item) {
+    final statusColor = _getStatusColor(item.status);
+    final fromDate = convertDateToString(item.fromDate, PATTERN_1);
+    final toDate = convertDateToString(item.toDate, PATTERN_1);
+
+    return InkWell(
+      onTap: () {
+        Get.toNamed(
+          AppRoute.routeRegisterLeaveDetail,
+          arguments: RegisterLeaveDetailArgument(
+            registerId: item.id,
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Xin nghỉ phép tháng ${item.fromDate.month}/${item.fromDate.year}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+            const SizedBox(height: 10),
+            _buildInfoRow('Loại nghỉ:', item.leaveType.displayName),
+            _buildInfoRow('Từ ngày:', fromDate),
+            _buildInfoRow('Đến ngày:', toDate),
+            _buildInfoRow('Lý do:', item.reason),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Icon(Icons.circle, color: statusColor, size: 10),
+                const SizedBox(width: 6),
+                Text(
+                  item.status.displayName,
+                  style: TextStyle(
+                    color: statusColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildLeaveCard(Map<String, dynamic> data) {
-    final Color statusColor = data['statusColor'] ?? Colors.grey;
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            data['title'] ?? '',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Color(0xFF1E293B),
-            ),
-          ),
-          const SizedBox(height: 10),
-
-          _buildInfoRow('Loại nghỉ:', data['leaveType'] ?? ''),
-          // Thay thế 'Ngày nghỉ' bằng 'Từ ngày' và 'Đến ngày'
-          _buildInfoRow('Từ ngày:', data['startDate'] ?? ''),
-          _buildInfoRow('Đến ngày:', data['endDate'] ?? ''),
-          _buildInfoRow('Lý do:', data['reason'] ?? ''),
-
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Icon(Icons.circle, color: statusColor, size: 10),
-              const SizedBox(width: 6),
-              Text(
-                data['status'] ?? 'N/A',
-                style: TextStyle(
-                  color: statusColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  Color _getStatusColor(RequestStatus status) {
+    if (status.isApproved) return Colors.green;
+    if (status.isRejected) return Colors.red;
+    if (status.isCancelled) return Colors.grey;
+    if (status.isPendingManager) return Colors.orange;
+    if (status.isPendingHR) return Colors.blue;
+    return Colors.grey;
   }
 
   Widget _buildInfoRow(String label, String value) {

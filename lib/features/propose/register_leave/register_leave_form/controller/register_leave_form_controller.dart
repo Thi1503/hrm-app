@@ -2,7 +2,7 @@ import 'package:do_an_application/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class RegisterLeaveDetailController extends BaseGetxController {
+class RegisterLeaveFormController extends BaseGetxController {
   final fromDateCtrl = TextEditingController();
 
   final toDateCtrl = TextEditingController();

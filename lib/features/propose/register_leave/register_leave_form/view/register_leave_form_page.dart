@@ -13,13 +13,12 @@ import '../../../../../utils/utils.dart';
 
 part 'register_leave_form_widget.dart';
 
-class RegisterLeaveDetailPage
-    extends BaseGetWidget<RegisterLeaveDetailController> {
-  RegisterLeaveDetailController get controller => _controller;
+class RegisterLeaveFormPage extends BaseGetWidget<RegisterLeaveFormController> {
+  RegisterLeaveFormController get controller => _controller;
 
-  late final _controller = Get.put(RegisterLeaveDetailController());
+  late final _controller = Get.put(RegisterLeaveFormController());
 
-  RegisterLeaveDetailPage({super.key});
+  RegisterLeaveFormPage({super.key});
 
   @override
   Widget buildWidgets() {

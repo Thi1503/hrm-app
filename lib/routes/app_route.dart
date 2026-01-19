@@ -7,6 +7,7 @@ abstract class AppRoute {
   static const routeDioLog = '/dio_log';
   static const routeProfile = '/profile';
   static const routeRegisterLeave = '/register_leave';
+  static const routeRegisterLeaveForm = '/register_leave_form';
   static const routeRegisterLeaveDetail = '/register_leave_detail';
   static const routeOverTimeList = '/over_time_list';
   static const routeOverTimeForm = '/over_time_form';
