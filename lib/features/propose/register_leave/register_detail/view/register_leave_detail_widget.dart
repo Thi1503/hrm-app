@@ -107,6 +107,66 @@ extension RegisterLeaveDetailWidget on RegisterLeaveDetailPage {
     );
   }
 
+  Widget _buildBottomActions() {
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 24,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5))
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildButton(
+              'Từ chối',
+              Colors.red,
+              () => (),
+            ),
+          ),
+          const SizedBox(width: 8),
+          const SizedBox(width: 8),
+          Expanded(
+            child: _buildButton(
+              'Phê duyệt',
+              Colors.blue,
+              () => (),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButton(
+    String text,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return ElevatedButton(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        elevation: 0,
+      ),
+      child: Text(text,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+    );
+  }
+
   Color _getStatusColor(RequestStatus status) {
     if (status.isApproved) return Colors.green;
     if (status.isRejected) return Colors.red;

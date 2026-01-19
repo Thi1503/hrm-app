@@ -38,6 +38,7 @@ extension RegisterHrLeavesWidget on RegisterLeavePage {
             departmentName: item.departmentName,
             positionName: item.positionName,
             managerName: item.managerName,
+            isFromHrListPage: true,
           ),
         );
       },

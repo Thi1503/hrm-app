@@ -35,6 +35,7 @@ extension RegisterManagerLeavesWidget on RegisterLeavePage {
           arguments: RegisterLeaveDetailArgument(
             registerId: item.requestId,
             employeeName: item.employeeName,
+            isFromManagerListPage: true,
           ),
         );
       },
