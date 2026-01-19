@@ -17,4 +17,7 @@ class ApiUrl {
 
   static String urlGetLeaveRequestDetail(int id) =>
       '/request-approval/leave-requests/detail/$id';
+
+  static const String urlCreateLeaveRequest =
+      '/request-approval/leave-requests/create';
 }
