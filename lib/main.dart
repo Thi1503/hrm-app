@@ -31,7 +31,6 @@ void main() async {
   await GetStorage.init();
   AppColors.init();
 
-
   init();
 
   runApp(const Application());
