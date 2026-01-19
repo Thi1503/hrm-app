@@ -23,7 +23,10 @@ class RegisterLeaveController extends BaseGetxController {
       final response = await _repository.getMyRequests();
 
       if (response.success == true) {
-        leaveRequests.value = response.data;
+        final data = response.data;
+        // Sắp xếp theo ngày tạo, mới nhất lên đầu
+        data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        leaveRequests.value = data;
       } else {
         showSnackBar(response.message);
       }
