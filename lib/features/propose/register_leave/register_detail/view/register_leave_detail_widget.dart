@@ -18,6 +18,24 @@ extension RegisterLeaveDetailWidget on RegisterLeaveDetailPage {
             _buildInfoRow(
                 'Tạo bởi:', Text(controller.argument.employeeName ?? 'Tôi')),
             SizedBox(height: AppDimens.defaultPadding),
+            if (controller.argument.departmentName != null &&
+                controller.argument.departmentName!.isNotEmpty) ...[
+              _buildInfoRow(
+                  'Phòng ban:', Text(controller.argument.departmentName!)),
+              SizedBox(height: AppDimens.defaultPadding),
+            ],
+            if (controller.argument.positionName != null &&
+                controller.argument.positionName!.isNotEmpty) ...[
+              _buildInfoRow(
+                  'Chức vụ:', Text(controller.argument.positionName!)),
+              SizedBox(height: AppDimens.defaultPadding),
+            ],
+            if (controller.argument.managerName != null &&
+                controller.argument.managerName!.isNotEmpty) ...[
+              _buildInfoRow(
+                  'Người quản lý:', Text(controller.argument.managerName!)),
+              SizedBox(height: AppDimens.defaultPadding),
+            ],
             _buildInfoRow(
               'Nghỉ từ ngày:',
               Text(DateFormat('dd/MM/yyyy').format(detail.fromDate)),
