@@ -8,7 +8,7 @@ class AppConst {
   /// iOS Simulator / Web: localhost
   static String get baseUrl {
     if (Platform.isAndroid) {
-      return "http://10.0.2.2:8086";
+      return "http://192.168.1.34:8086";
     }
     return "http://localhost:8086";
   }

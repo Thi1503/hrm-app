@@ -1,6 +1,6 @@
 part of 'register_leave_form_page.dart';
 
-extension RegisterLeaveDetailWidget on RegisterLeaveDetailPage {
+extension RegisterLeaveFormWidget on RegisterLeaveFormPage {
   Widget _buildBody() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppDimens.defaultPadding),

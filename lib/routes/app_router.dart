@@ -48,8 +48,8 @@ abstract class AppRouter {
       page: () => RegisterLeavePage(),
     ),
     GetPage(
-      name: AppRoute.routeRegisterLeaveDetail,
-      page: () => RegisterLeaveDetailPage(),
+      name: AppRoute.routeRegisterLeaveForm,
+      page: () => RegisterLeaveFormPage(),
     ),
     GetPage(
       name: AppRoute.routeOverTimeList,

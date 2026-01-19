@@ -92,7 +92,7 @@ extension RegisterLeaveWidget on RegisterLeavePage {
           const SizedBox(width: 10),
           _buildActionButton(
             icon: Icons.add,
-            onTap: () => Get.toNamed(AppRoute.routeRegisterLeaveDetail),
+            onTap: () => Get.toNamed(AppRoute.routeRegisterLeaveForm),
             color: Color(0xFFF97316),
           ),
         ],
