@@ -12,12 +12,12 @@ class ApiUrl {
   static const String urlGetMyLogs = '/attendance/attendance/my-logs';
 
   // Request Approval Service
-  static const String urlGetMyRequests =
+  static const String urlGetMyLeaveRequests =
       '/request-approval/leave-requests/list';
-
+  static const String urlGetManagerRequests =
+      '/request-approval/approvals/manager/leaves';
   static String urlGetLeaveRequestDetail(int id) =>
       '/request-approval/leave-requests/detail/$id';
-
   static const String urlCreateLeaveRequest =
       '/request-approval/leave-requests/create';
 }

@@ -1,9 +1,9 @@
 part of 'register_leave_page.dart';
 
-extension RegisterMyLeavesWidget on RegisterLeavePage {
-  Widget buildMyLeaveList() {
+extension RegisterManagerLeavesWidget on RegisterLeavePage {
+  Widget buildManagerLeaveList() {
     return Obx(() {
-      final filteredRequests = controller.filteredRequests;
+      final filteredRequests = controller.filteredManagerRequests;
 
       if (filteredRequests.isEmpty) {
         return const Center(
@@ -18,12 +18,12 @@ extension RegisterMyLeavesWidget on RegisterLeavePage {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: filteredRequests.length,
         itemBuilder: (context, index) =>
-            buildLeaveCard(filteredRequests[index]),
+            buildManagerLeaveCard(filteredRequests[index]),
       );
     });
   }
 
-  Widget buildLeaveCard(LeaveRequestItem item) {
+  Widget buildManagerLeaveCard(LeaveRequestManagerItem item) {
     final statusColor = getStatusColor(item.status);
     final fromDate = convertDateToString(item.fromDate, PATTERN_1);
     final toDate = convertDateToString(item.toDate, PATTERN_1);
@@ -33,7 +33,7 @@ extension RegisterMyLeavesWidget on RegisterLeavePage {
         Get.toNamed(
           AppRoute.routeRegisterLeaveDetail,
           arguments: RegisterLeaveDetailArgument(
-            registerId: item.id,
+            registerId: item.requestId,
           ),
         );
       },
@@ -57,6 +57,7 @@ extension RegisterMyLeavesWidget on RegisterLeavePage {
               ),
             ),
             const SizedBox(height: 10),
+            buildInfoRow('Nhân viên:', item.employeeName),
             buildInfoRow('Loại nghỉ:', item.leaveType.displayName),
             buildInfoRow('Từ ngày:', fromDate),
             buildInfoRow('Đến ngày:', toDate),
