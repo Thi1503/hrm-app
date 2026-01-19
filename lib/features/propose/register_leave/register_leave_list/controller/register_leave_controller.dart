@@ -31,6 +31,10 @@ class RegisterLeaveController extends BaseGetxController {
     }
   }
 
+  bool get isHRorAdmin =>
+      appController.currentUserRole.value == UserRole.hr ||
+      appController.currentUserRole.value == UserRole.admin;
+
   Future<void> fetchLeaveRequests() async {
     try {
       showLoading();

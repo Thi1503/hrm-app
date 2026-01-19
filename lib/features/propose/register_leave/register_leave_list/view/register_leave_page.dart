@@ -1,6 +1,5 @@
 import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/const/colors.dart';
-import 'package:do_an_application/features/login/models/roles_enum.dart';
 import 'package:do_an_application/features/propose/enums/request_status.dart';
 import 'package:do_an_application/features/propose/register_leave/register_detail/models/register_leave_detail_argument.dart';
 import 'package:do_an_application/features/propose/register_leave/register_leave_list/controller/register_leave_controller.dart';
@@ -37,8 +36,7 @@ class RegisterLeavePage extends BaseGetWidget<RegisterLeaveController> {
               child: TabBarView(
                 children: [
                   buildMyLeaveList(),
-                  if (controller.role.value == UserRole.hr ||
-                      controller.role.value == UserRole.admin)
+                  if (controller.isHRorAdmin)
                     buildHrLeaveList()
                   else
                     buildManagerLeaveList(),
