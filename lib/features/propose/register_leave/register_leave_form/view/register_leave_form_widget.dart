@@ -100,10 +100,10 @@ extension RegisterLeaveFormWidget on RegisterLeaveFormPage {
     // 1. Mock danh sách loại nghỉ
     final List<String> leaveTypes = [
       'Nghỉ phép năm',
-      'Nghỉ ốm/đau',
+      'Nghỉ ốm',
       'Nghỉ không lương',
-      'Nghỉ chế độ (Thai sản/Kết hôn)',
-      'Nghỉ bù',
+      'Nghỉ chế độ',
+      'Khác',
     ];
 
     return Column(
