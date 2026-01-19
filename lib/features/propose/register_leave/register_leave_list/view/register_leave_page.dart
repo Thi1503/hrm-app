@@ -1,6 +1,7 @@
 import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/const/colors.dart';
 import 'package:do_an_application/features/propose/enums/request_status.dart';
+import 'package:do_an_application/features/propose/register_leave/register_detail/models/register_leave_detail_argument.dart';
 import 'package:do_an_application/features/propose/register_leave/register_leave_list/controller/register_leave_controller.dart';
 import 'package:do_an_application/features/propose/register_leave/register_leave_list/models/leave_request_item.dart';
 import 'package:do_an_application/routes/app_route.dart';
