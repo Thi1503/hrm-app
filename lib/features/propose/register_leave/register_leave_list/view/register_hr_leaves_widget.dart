@@ -29,8 +29,8 @@ extension RegisterHrLeavesWidget on RegisterLeavePage {
     final toDate = convertDateToString(item.toDate, PATTERN_1);
 
     return InkWell(
-      onTap: () {
-        Get.toNamed(
+      onTap: () async {
+        final result = await Get.toNamed(
           AppRoute.routeRegisterLeaveDetail,
           arguments: RegisterLeaveDetailArgument(
             registerId: item.requestId,
@@ -41,6 +41,9 @@ extension RegisterHrLeavesWidget on RegisterLeavePage {
             isFromHrListPage: true,
           ),
         );
+        if (result == true) {
+          controller.fetchHrRequests();
+        }
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),

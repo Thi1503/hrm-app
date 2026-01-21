@@ -130,7 +130,7 @@ extension RegisterLeaveDetailWidget on RegisterLeaveDetailPage {
             child: _buildButton(
               'Từ chối',
               Colors.red,
-              () => (),
+              () => _showRejectDialog(),
             ),
           ),
           const SizedBox(width: 8),
@@ -139,7 +139,7 @@ extension RegisterLeaveDetailWidget on RegisterLeaveDetailPage {
             child: _buildButton(
               'Phê duyệt',
               Colors.blue,
-              () => (),
+              () => controller.showApproveDialog(),
             ),
           ),
         ],
@@ -174,5 +174,48 @@ extension RegisterLeaveDetailWidget on RegisterLeaveDetailPage {
     if (status.isPendingManager) return Colors.orange;
     if (status.isPendingHR) return Colors.blue;
     return Colors.grey;
+  }
+
+  void _showRejectDialog() {
+    final reasonController = TextEditingController();
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Từ chối đơn nghỉ phép'),
+        content: SizedBox(
+          width: 400,
+          child: TextField(
+            controller: reasonController,
+            decoration: const InputDecoration(
+              hintText: 'Nhập lý do từ chối',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+            ),
+            maxLines: 3,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Hủy'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (reasonController.text.trim().isEmpty) {
+                controller.showSnackBar('Vui lòng nhập lý do từ chối');
+                return;
+              }
+              Get.back();
+              controller.rejectLeaveRequest(reasonController.text.trim());
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Từ chối'),
+          ),
+        ],
+      ),
+    );
   }
 }
