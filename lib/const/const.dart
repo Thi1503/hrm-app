@@ -5,10 +5,11 @@ class AppConst {
 
   /// Base URL cho API
   /// Android Emulator: 10.0.2.2 -> localhost của máy host
+  /// 192.168.1.34: actual local IP address
   /// iOS Simulator / Web: localhost
   static String get baseUrl {
     if (Platform.isAndroid) {
-      return "http://192.168.1.34:8086";
+      return "http://10.0.2.2:8086";
     }
     return "http://localhost:8086";
   }

@@ -2,7 +2,7 @@ part of 'register_leave_page.dart';
 
 extension RegisterLeaveWidget on RegisterLeavePage {
 // 1. Build AppBar đồng bộ hoàn toàn về Font và Màu sắc
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget buildAppBar() {
     return AppBar(
       centerTitle: true,
       elevation: 0,
@@ -46,7 +46,7 @@ extension RegisterLeaveWidget on RegisterLeavePage {
   }
 
   // 2. Bộ lọc trạng thái và các nút chức năng
-  Widget _buildFilterHeader() {
+  Widget buildFilterHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
@@ -90,17 +90,22 @@ extension RegisterLeaveWidget on RegisterLeavePage {
             ),
           ),
           const SizedBox(width: 10),
-          _buildActionButton(
+          buildActionButton(
             icon: Icons.add,
-            onTap: () => Get.toNamed(AppRoute.routeRegisterLeaveForm),
-            color: Color(0xFFF97316),
+            onTap: () async {
+              final result = await Get.toNamed(AppRoute.routeRegisterLeaveForm);
+              if (result == true) {
+                controller.fetchLeaveRequests();
+              }
+            },
+            color: const Color(0xFFF97316),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildActionButton({
+  Widget buildActionButton({
     required IconData icon,
     required Color color,
     void Function()? onTap,
@@ -115,88 +120,7 @@ extension RegisterLeaveWidget on RegisterLeavePage {
     );
   }
 
-  Widget _buildLeaveList() {
-    return Obx(() {
-      final filteredRequests = controller.filteredRequests;
-
-      if (filteredRequests.isEmpty) {
-        return const Center(
-          child: Text(
-            'Không có đơn nghỉ phép nào',
-            style: TextStyle(color: Colors.grey, fontSize: 16),
-          ),
-        );
-      }
-
-      return ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: filteredRequests.length,
-        itemBuilder: (context, index) =>
-            _buildLeaveCard(filteredRequests[index]),
-      );
-    });
-  }
-
-  Widget _buildLeaveCard(LeaveRequestItem item) {
-    final statusColor = _getStatusColor(item.status);
-    final fromDate = convertDateToString(item.fromDate, PATTERN_1);
-    final toDate = convertDateToString(item.toDate, PATTERN_1);
-
-    return InkWell(
-      onTap: () {
-        Get.toNamed(
-          AppRoute.routeRegisterLeaveDetail,
-          arguments: RegisterLeaveDetailArgument(
-            registerId: item.id,
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.grey.shade200),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Xin nghỉ phép tháng ${item.fromDate.month}/${item.fromDate.year}',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Color(0xFF1E293B),
-              ),
-            ),
-            const SizedBox(height: 10),
-            _buildInfoRow('Loại nghỉ:', item.leaveType.displayName),
-            _buildInfoRow('Từ ngày:', fromDate),
-            _buildInfoRow('Đến ngày:', toDate),
-            _buildInfoRow('Lý do:', item.reason),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Icon(Icons.circle, color: statusColor, size: 10),
-                const SizedBox(width: 6),
-                Text(
-                  item.status.displayName,
-                  style: TextStyle(
-                    color: statusColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Color _getStatusColor(RequestStatus status) {
+  Color getStatusColor(RequestStatus status) {
     if (status.isApproved) return Colors.green;
     if (status.isRejected) return Colors.red;
     if (status.isCancelled) return Colors.grey;
@@ -205,7 +129,7 @@ extension RegisterLeaveWidget on RegisterLeavePage {
     return Colors.grey;
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget buildInfoRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Row(
