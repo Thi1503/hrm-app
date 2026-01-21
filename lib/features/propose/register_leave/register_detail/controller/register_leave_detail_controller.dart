@@ -19,6 +19,9 @@ class RegisterLeaveDetailController extends BaseGetxController {
     fetchLeaveDetail();
   }
 
+  bool get isShowBottomActions =>
+      argument.isFromManagerListPage || argument.isFromHrListPage;
+
   Future<void> fetchLeaveDetail() async {
     try {
       showLoading();

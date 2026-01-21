@@ -21,12 +21,13 @@ class RegisterLeaveDetailPage
   @override
   Widget buildWidgets() {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: BaseAppBar(
-        title: 'Thông tin chi tiết',
-        backgroundColor: const Color(0xFFFF6B35),
-      ),
-      body: _buildBody(),
-    );
+        backgroundColor: Colors.white,
+        appBar: BaseAppBar(
+          title: 'Thông tin chi tiết',
+          backgroundColor: const Color(0xFFFF6B35),
+        ),
+        body: _buildBody(),
+        bottomNavigationBar:
+            controller.isShowBottomActions ? _buildBottomActions() : null);
   }
 }

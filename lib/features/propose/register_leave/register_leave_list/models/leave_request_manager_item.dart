@@ -1,43 +1,37 @@
 import 'package:do_an_application/features/propose/enums/request_status.dart';
 import 'package:do_an_application/features/propose/register_leave/register_leave_list/models/leave_type.dart';
 
-class LeaveRequestItem {
-  final int id;
+class LeaveRequestManagerItem {
+  final int requestId;
   final int employeeId;
+  final String employeeName;
   final LeaveType leaveType;
   final DateTime fromDate;
   final DateTime toDate;
-  final int totalDays;
   final String reason;
-  final String attachmentUrl;
   final RequestStatus status;
-  final DateTime createdAt;
 
-  LeaveRequestItem({
-    required this.id,
+  LeaveRequestManagerItem({
+    required this.requestId,
     required this.employeeId,
+    required this.employeeName,
     required this.leaveType,
     required this.fromDate,
     required this.toDate,
-    required this.totalDays,
     required this.reason,
-    required this.attachmentUrl,
     required this.status,
-    required this.createdAt,
   });
 
-  factory LeaveRequestItem.fromJson(Map<String, dynamic> json) {
-    return LeaveRequestItem(
-      id: (json['id'] ?? 0).toInt(),
+  factory LeaveRequestManagerItem.fromJson(Map<String, dynamic> json) {
+    return LeaveRequestManagerItem(
+      requestId: (json['requestId'] ?? 0).toInt(),
       employeeId: (json['employeeId'] ?? 0).toInt(),
+      employeeName: json['employeeName'] ?? '',
       leaveType: LeaveType.fromValue(json['leaveType']),
       fromDate: DateTime.parse(json['fromDate']),
       toDate: DateTime.parse(json['toDate']),
-      totalDays: (json['totalDays'] ?? 0).toInt(),
       reason: json['reason'] ?? '',
-      attachmentUrl: json['attachmentUrl'] ?? '',
       status: RequestStatus.fromValue(json['status']),
-      createdAt: DateTime.parse(json['createdAt']),
     );
   }
 }
