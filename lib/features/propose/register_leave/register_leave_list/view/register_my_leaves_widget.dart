@@ -29,13 +29,16 @@ extension RegisterMyLeavesWidget on RegisterLeavePage {
     final toDate = convertDateToString(item.toDate, PATTERN_1);
 
     return InkWell(
-      onTap: () {
-        Get.toNamed(
+      onTap: () async {
+        final result = await Get.toNamed(
           AppRoute.routeRegisterLeaveDetail,
           arguments: RegisterLeaveDetailArgument(
             registerId: item.id,
           ),
         );
+        if (result == true) {
+          controller.fetchLeaveRequests();
+        }
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
