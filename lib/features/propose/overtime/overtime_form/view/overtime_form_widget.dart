@@ -34,7 +34,18 @@ extension OvertimeFormWidget on OvertimeFormPage {
         controller: controller.otDateCtrl,
         hintText: PATTERN_1,
         suffixIcon: IconButton(
-          onPressed: () => controller.selectOtDate(Get.context!),
+          onPressed: () async {
+            final result = await UtilWidgets.buildDateTimePicker(
+              dateTimeInit: convertStringToDateSafe(
+                    controller.otDateCtrl.text,
+                    PATTERN_1,
+                  ) ??
+                  DateTime.now(),
+            );
+            if (result == null) return;
+            controller.otDateCtrl.text =
+                convertDateToStringSafe(result, PATTERN_1) ?? '';
+          },
           icon: Icon(
             Icons.calendar_month,
             color: AppColors.primary2,
@@ -54,7 +65,17 @@ extension OvertimeFormWidget on OvertimeFormPage {
         hintText: 'HH:mm',
         isReadOnly: true,
         suffixIcon: IconButton(
-          onPressed: () => controller.selectStartTime(Get.context!),
+          onPressed: () async {
+            final result = await UtilWidgets.timePickerUtils(
+              initialDate:
+                  controller.startTimeCtrl.text.isEmpty
+                      ? '08:00'
+                      : controller.startTimeCtrl.text,
+            );
+            if (result == null) return;
+            controller.startTimeCtrl.text =
+                convertDateToStringSafe(result, PATTERN_11) ?? '';
+          },
           icon: Icon(
             Icons.access_time,
             color: AppColors.primary2,
@@ -73,7 +94,17 @@ extension OvertimeFormWidget on OvertimeFormPage {
         hintText: 'HH:mm',
         isReadOnly: true,
         suffixIcon: IconButton(
-          onPressed: () => controller.selectEndTime(Get.context!),
+          onPressed: () async {
+            final result = await UtilWidgets.timePickerUtils(
+              initialDate:
+                  controller.endTimeCtrl.text.isEmpty
+                      ? '17:00'
+                      : controller.endTimeCtrl.text,
+            );
+            if (result == null) return;
+            controller.endTimeCtrl.text =
+                convertDateToStringSafe(result, PATTERN_11) ?? '';
+          },
           icon: Icon(
             Icons.access_time,
             color: AppColors.primary2,

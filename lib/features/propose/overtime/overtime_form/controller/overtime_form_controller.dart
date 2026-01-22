@@ -14,67 +14,10 @@ class OvertimeFormController extends BaseGetxController {
   final endTimeCtrl = TextEditingController();
   final reasonCtrl = TextEditingController();
 
-  TimeOfDay? selectedStartTime;
-  TimeOfDay? selectedEndTime;
-
   @override
   void onInit() {
     super.onInit();
     _repository = OvertimeFormRepository(this);
-  }
-
-  Future<void> selectOtDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: convertStringToDateSafe(otDateCtrl.text, PATTERN_1) ??
-          DateTime.now(),
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2100),
-    );
-
-    if (picked != null) {
-      otDateCtrl.text = convertDateToStringSafe(picked, PATTERN_1) ?? '';
-    }
-  }
-
-  Future<void> selectStartTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: selectedStartTime ?? const TimeOfDay(hour: 8, minute: 0),
-      builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        );
-      },
-    );
-
-    if (picked != null) {
-      selectedStartTime = picked;
-      startTimeCtrl.text = _formatTime(picked);
-    }
-  }
-
-  Future<void> selectEndTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: selectedEndTime ?? const TimeOfDay(hour: 17, minute: 0),
-      builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        );
-      },
-    );
-
-    if (picked != null) {
-      selectedEndTime = picked;
-      endTimeCtrl.text = _formatTime(picked);
-    }
-  }
-
-  String _formatTime(TimeOfDay time) {
-    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
   Future<void> submitOtRequest() async {
@@ -99,14 +42,23 @@ class OvertimeFormController extends BaseGetxController {
       return;
     }
 
-    if (selectedStartTime == null || selectedEndTime == null) {
-      showSnackBar('Vui lòng chọn thời gian hợp lệ');
+    // Parse time from string HH:mm
+    final startParts = startTimeCtrl.text.split(':');
+    final endParts = endTimeCtrl.text.split(':');
+
+    if (startParts.length < 2 || endParts.length < 2) {
+      showSnackBar('Định dạng thời gian không hợp lệ');
       return;
     }
 
+    final startHour = int.tryParse(startParts[0]) ?? 0;
+    final startMinute = int.tryParse(startParts[1]) ?? 0;
+    final endHour = int.tryParse(endParts[0]) ?? 0;
+    final endMinute = int.tryParse(endParts[1]) ?? 0;
+
     // Validate start time < end time
-    final startMinutes = selectedStartTime!.hour * 60 + selectedStartTime!.minute;
-    final endMinutes = selectedEndTime!.hour * 60 + selectedEndTime!.minute;
+    final startMinutes = startHour * 60 + startMinute;
+    final endMinutes = endHour * 60 + endMinute;
     if (startMinutes >= endMinutes) {
       showSnackBar('Giờ bắt đầu phải nhỏ hơn giờ kết thúc');
       return;
@@ -120,12 +72,12 @@ class OvertimeFormController extends BaseGetxController {
       final request = CreateOtRequest(
         otDate: otDate,
         startTime: OtTime(
-          hour: selectedStartTime!.hour,
-          minute: selectedStartTime!.minute,
+          hour: startHour,
+          minute: startMinute,
         ),
         endTime: OtTime(
-          hour: selectedEndTime!.hour,
-          minute: selectedEndTime!.minute,
+          hour: endHour,
+          minute: endMinute,
         ),
         reason: reasonCtrl.text.trim(),
       );
