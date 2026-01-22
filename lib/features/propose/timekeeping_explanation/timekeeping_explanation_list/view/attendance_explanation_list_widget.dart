@@ -190,8 +190,18 @@ extension AttendanceExplanationListWidget on AttendanceExplanationListPage {
     final workDate = convertDateToString(item.workDate, PATTERN_1);
 
     return InkWell(
-      onTap: () {
-        // TODO: Navigate to detail page
+      onTap: () async {
+        final result = await Get.toNamed(
+          AppRoute.routeTimekeepingExplanationDetail,
+          arguments: ExplanationDetailArgument(
+            requestId: item.requestId,
+            employeeName: item.employeeName,
+            isFromManagerListPage: true,
+          ),
+        );
+        if (result == true) {
+          controller.fetchManagerExplanations();
+        }
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
@@ -243,8 +253,19 @@ extension AttendanceExplanationListWidget on AttendanceExplanationListPage {
     final workDate = convertDateToString(item.workDate, PATTERN_1);
 
     return InkWell(
-      onTap: () {
-        // TODO: Navigate to detail page
+      onTap: () async {
+        final result = await Get.toNamed(
+          AppRoute.routeTimekeepingExplanationDetail,
+          arguments: ExplanationDetailArgument(
+            requestId: item.requestId,
+            employeeName: item.employeeName,
+            departmentName: item.departmentName,
+            isFromHrListPage: true,
+          ),
+        );
+        if (result == true) {
+          controller.fetchHrExplanations();
+        }
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
@@ -298,9 +319,16 @@ extension AttendanceExplanationListWidget on AttendanceExplanationListPage {
     final workDate = convertDateToString(item.workDate, PATTERN_1);
 
     return InkWell(
-      onTap: () {
-        // TODO: Navigate to detail page
-        // showSnackBar('Chi tiết đơn giải trình #${item.id}');
+      onTap: () async {
+        final result = await Get.toNamed(
+          AppRoute.routeTimekeepingExplanationDetail,
+          arguments: ExplanationDetailArgument(
+            requestId: item.id,
+          ),
+        );
+        if (result == true) {
+          controller.fetchMyExplanations();
+        }
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),

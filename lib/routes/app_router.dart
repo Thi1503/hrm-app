@@ -8,6 +8,7 @@ import 'package:do_an_application/features/profile/view/profile_page.dart';
 import 'package:do_an_application/features/propose/overtime/overtime_form/view/overtime_form_page.dart';
 import 'package:do_an_application/features/propose/overtime/overtime_list/view/overtime_list_page.dart';
 import 'package:do_an_application/features/propose/register_leave/register_detail/view/register_leave_detail_page.dart';
+import 'package:do_an_application/features/propose/timekeeping_explanation/timekeeping_explanation_detail/view/explanation_detail_page.dart';
 import 'package:do_an_application/features/propose/register_leave/register_leave_form/view/register_leave_form_page.dart';
 import 'package:do_an_application/features/propose/register_leave/register_leave_list/view/register_leave_page.dart';
 import 'package:do_an_application/features/propose/register_remote/register_remote_form/view/register_remote_form_page.dart';
@@ -55,6 +56,10 @@ abstract class AppRouter {
     GetPage(
       name: AppRoute.routeRegisterLeaveDetail,
       page: () => RegisterLeaveDetailPage(),
+    ),
+    GetPage(
+      name: AppRoute.routeTimekeepingExplanationDetail,
+      page: () => ExplanationDetailPage(),
     ),
     GetPage(
       name: AppRoute.routeOverTimeList,
