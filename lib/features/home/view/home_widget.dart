@@ -174,14 +174,14 @@ extension HomeWidget on HomePage {
             Expanded(
               child: _buildTimekeepingAction(
                 label: 'Check in',
-                route: '',
+                route: AppRoute.routeCheckIn,
               ),
             ),
             sdsSBWidth12,
             Expanded(
               child: _buildTimekeepingAction(
                 label: 'Check out',
-                route: '',
+                route: AppRoute.routeCheckOut,
               ),
             ),
           ],

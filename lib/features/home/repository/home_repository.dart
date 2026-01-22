@@ -1,6 +1,7 @@
 import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/const/api_url.dart';
 import 'package:do_an_application/features/home/models/attendance_log.dart';
+import 'package:do_an_application/features/attendance/models/check_in_request.dart';
 import 'package:do_an_application/utils/date_utils.dart';
 
 class HomeRepository extends BaseRepository {
@@ -35,5 +36,25 @@ class HomeRepository extends BaseRepository {
       res,
       func: (x) => AttendanceLog.fromJson(x),
     );
+  }
+
+  Future<BaseResponse> checkIn(CheckInRequest request) async {
+    final res = await baseSendRequest(
+      ApiUrl.urlCheckIn,
+      RequestMethod.POST,
+      jsonMap: request.toJson(),
+    );
+
+    return BaseResponse.fromJson(res);
+  }
+
+  Future<BaseResponse> checkOut(CheckInRequest request) async {
+    final res = await baseSendRequest(
+      ApiUrl.urlCheckOut,
+      RequestMethod.POST,
+      jsonMap: request.toJson(),
+    );
+
+    return BaseResponse.fromJson(res);
   }
 }
