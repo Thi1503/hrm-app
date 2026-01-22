@@ -3,7 +3,7 @@ part of 'overtime_form_page.dart';
 extension OvertimeFormWidget on OvertimeFormPage {
   Widget _buildBody() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppDimens.defaultPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -11,22 +11,12 @@ extension OvertimeFormWidget on OvertimeFormPage {
           _buildOvertimeDate(),
           sdsSBHeight12,
 
-          // Giờ bắt đầu và Giờ kết thúc
-          Row(
-            children: [
-              Expanded(
-                child: _buildStartHour(),
-              ),
-              sdsSBWidth12,
-              Expanded(
-                child: _buildEndHour(),
-              ),
-            ],
-          ),
+          // Giờ bắt đầu
+          _buildStartHour(),
           sdsSBHeight12,
 
-          // Tổng số giờ
-          _buildCountHour(),
+          // Giờ kết thúc
+          _buildEndHour(),
           sdsSBHeight12,
 
           // Lý do
@@ -41,19 +31,19 @@ extension OvertimeFormWidget on OvertimeFormPage {
       label: 'Ngày OT',
       isRequired: true,
       inputTextModel: InputTextModel(
-        controller: controller.overTimeDateCtrl,
+        controller: controller.otDateCtrl,
         hintText: PATTERN_1,
         suffixIcon: IconButton(
           onPressed: () async {
             final result = await UtilWidgets.buildDateTimePicker(
               dateTimeInit: convertStringToDateSafe(
-                    controller.overTimeDateCtrl.text,
+                    controller.otDateCtrl.text,
                     PATTERN_1,
                   ) ??
                   DateTime.now(),
             );
             if (result == null) return;
-            controller.overTimeDateCtrl.text =
+            controller.otDateCtrl.text =
                 convertDateToStringSafe(result, PATTERN_1) ?? '';
           },
           icon: Icon(
@@ -71,17 +61,19 @@ extension OvertimeFormWidget on OvertimeFormPage {
       label: 'Giờ bắt đầu',
       isRequired: true,
       inputTextModel: InputTextModel(
-        controller: controller.startHourCtrl,
-        hintText: PATTERN_11,
+        controller: controller.startTimeCtrl,
+        hintText: 'HH:mm',
         isReadOnly: true,
         suffixIcon: IconButton(
           onPressed: () async {
             final result = await UtilWidgets.timePickerUtils(
               initialDate:
-                  convertDateToStringSafe(DateTime.now(), PATTERN_11) ?? '',
+                  controller.startTimeCtrl.text.isEmpty
+                      ? '08:00'
+                      : controller.startTimeCtrl.text,
             );
             if (result == null) return;
-            controller.startHourCtrl.text =
+            controller.startTimeCtrl.text =
                 convertDateToStringSafe(result, PATTERN_11) ?? '';
           },
           icon: Icon(
@@ -98,17 +90,19 @@ extension OvertimeFormWidget on OvertimeFormPage {
       label: 'Giờ kết thúc',
       isRequired: true,
       inputTextModel: InputTextModel(
-        controller: controller.toTimeCtrl,
-        hintText: PATTERN_11,
+        controller: controller.endTimeCtrl,
+        hintText: 'HH:mm',
         isReadOnly: true,
         suffixIcon: IconButton(
           onPressed: () async {
             final result = await UtilWidgets.timePickerUtils(
               initialDate:
-                  convertDateToStringSafe(DateTime.now(), PATTERN_11) ?? '',
+                  controller.endTimeCtrl.text.isEmpty
+                      ? '17:00'
+                      : controller.endTimeCtrl.text,
             );
             if (result == null) return;
-            controller.toTimeCtrl.text =
+            controller.endTimeCtrl.text =
                 convertDateToStringSafe(result, PATTERN_11) ?? '';
           },
           icon: Icon(
@@ -116,21 +110,6 @@ extension OvertimeFormWidget on OvertimeFormPage {
             color: AppColors.primary2,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildCountHour() {
-    return BuildInputTextWithLabel(
-      label: 'Tổng số giờ',
-      isRequired: true,
-      inputTextModel: InputTextModel(
-        controller: controller.countHourCtrl,
-        isReadOnly: true,
-        hintText: '0.00',
-        focusedBorder: _outlineInputBorder(),
-        focusedErrorBorder: _outlineInputBorder(),
-        enabledBorder: _outlineInputBorder(),
       ),
     );
   }
@@ -147,6 +126,7 @@ extension OvertimeFormWidget on OvertimeFormPage {
   Widget _buildReasonInput() {
     return BuildInputTextWithLabel(
       label: 'Lý do',
+      isRequired: true,
       inputTextModel: InputTextModel(
         controller: controller.reasonCtrl,
         hintText: 'Nhập lý do...',
@@ -191,7 +171,7 @@ extension OvertimeFormWidget on OvertimeFormPage {
             child: _buildButton(
               text: 'Gửi phê duyệt',
               color: const Color(0xFFF97316),
-              onTap: () {},
+              onTap: () => controller.submitOtRequest(),
             ),
           ),
         ],

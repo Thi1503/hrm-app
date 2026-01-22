@@ -13,6 +13,7 @@ abstract class AppRoute {
       '/timekeeping_explanation_detail';
   static const routeOverTimeList = '/over_time_list';
   static const routeOverTimeForm = '/over_time_form';
+  static const routeOverTimeDetail = '/over_time_detail';
   static const routeRegisterRemoteList = '/register_remote_list';
   static const routeRegisterRemoteForm = '/register_remote_form';
   static const routeTimekeepingExplanationForm =

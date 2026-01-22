@@ -44,29 +44,40 @@ extension OvertimeListWidget on OvertimeListPage {
         children: [
           const Text('Trạng thái: ', style: TextStyle(color: Colors.black54)),
           Expanded(
-            child: Container(
-              height: 36,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: 'Tất cả',
-                  icon: const Icon(Icons.arrow_drop_down, color: Colors.orange),
-                  items: [
-                    'Tất cả',
-                    'Đã duyệt',
-                    'Không phê duyệt',
-                  ].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value, style: const TextStyle(fontSize: 14)),
-                    );
-                  }).toList(),
-                  onChanged: (_) {},
+            child: Obx(
+              () => Container(
+                height: 40,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: controller.selectedStatus.value,
+                    icon:
+                        const Icon(Icons.arrow_drop_down, color: Colors.orange),
+                    items: [
+                      'Tất cả',
+                      'Chờ quản lý duyệt',
+                      'Chờ nhân sự duyệt',
+                      'Đã duyệt',
+                      'Từ chối',
+                      'Đã hủy'
+                    ].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child:
+                            Text(value, style: const TextStyle(fontSize: 14)),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        controller.setStatusFilter(value);
+                      }
+                    },
+                  ),
                 ),
               ),
             ),
@@ -80,8 +91,11 @@ extension OvertimeListWidget on OvertimeListPage {
 
   Widget _buildCircleButton(IconData icon) {
     return InkWell(
-      onTap: () {
-        Get.toNamed(AppRoute.routeOverTimeForm);
+      onTap: () async {
+        final result = await Get.toNamed(AppRoute.routeOverTimeForm);
+        if (result == true) {
+          controller.fetchOtRequests();
+        }
       },
       child: Container(
         padding: const EdgeInsets.all(6),
@@ -95,89 +109,103 @@ extension OvertimeListWidget on OvertimeListPage {
   }
 
   Widget _buildOvertimeList() {
-    final List<Map<String, dynamic>> mockData = [
-      {
-        'title': 'Làm thêm giờ tháng 12/2025',
-        'otDate': '02/01/2026',
-        'startHour': '17:30',
-        'endHour': '18:06',
-        'total': '0.6',
-        'reason': 'Hoàn thiện báo cáo tồn kho cho Easy Book',
-        'status': 'Không phê duyệt',
-        'statusColor': Colors.red,
-      },
-      {
-        'title': 'Làm thêm giờ tháng 12/2025',
-        'otDate': '01/08/2025',
-        'startHour': '18:00',
-        'endHour': '20:00',
-        'total': '2.0',
-        'reason': 'Fix giao diện vBHXH',
-        'status': 'Đã duyệt',
-        'statusColor': Colors.green,
-      },
-      {
-        'title': 'Làm thêm giờ tháng 12/2025',
-        'otDate': '01/07/2025',
-        'startHour': '08:00',
-        'endHour': '14:30',
-        'total': '6.5',
-        'reason': 'Chạy deadline vBHXH cho dự án com.viettel.ttcntt.vbhxh.uat',
-        'status': 'Đã duyệt',
-        'statusColor': Colors.green,
-      },
-    ];
+    return Obx(() {
+      final filteredRequests = controller.filteredRequests;
 
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: mockData.length,
-      itemBuilder: (context, index) => _buildOvertimeCard(mockData[index]),
-      separatorBuilder: (context, index) => sdsSBHeight12,
+      if (filteredRequests.isEmpty) {
+        return const Center(
+          child: Text(
+            'Không có đơn OT nào',
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+        );
+      }
+
+      return ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: filteredRequests.length,
+        itemBuilder: (context, index) =>
+            _buildOvertimeCard(filteredRequests[index]),
+        separatorBuilder: (context, index) => sdsSBHeight12,
+      );
+    });
+  }
+
+  Widget _buildOvertimeCard(OtRequestItem item) {
+    final statusColor = _getStatusColor(item.status);
+    final otDate = convertDateToString(item.otDate, PATTERN_1);
+    final startHour =
+        '${item.startTime.hour.toString().padLeft(2, '0')}:${item.startTime.minute.toString().padLeft(2, '0')}';
+    final endHour =
+        '${item.endTime.hour.toString().padLeft(2, '0')}:${item.endTime.minute.toString().padLeft(2, '0')}';
+
+    return GestureDetector(
+      onTap: () async {
+        final result = await Get.toNamed(
+          AppRoute.routeOverTimeDetail,
+          arguments: OvertimeDetailArgument(
+            otId: item.id,
+            isFromManagerListPage: false,
+            isFromHrListPage: false,
+          ),
+        );
+        if (result == true) {
+          controller.fetchOtRequests();
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Làm thêm giờ tháng ${item.otDate.month}/${item.otDate.year}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+            const SizedBox(height: 10),
+            _buildInfoRow('Ngày OT:', otDate),
+            _buildInfoRow('Giờ bắt đầu:', startHour),
+            _buildInfoRow('Giờ kết thúc:', endHour),
+            _buildInfoRow('Tổng số giờ:', '${item.totalHours} giờ'),
+            _buildInfoRow('Lý do:', item.reason),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Icon(Icons.circle, color: statusColor, size: 10),
+                const SizedBox(width: 6),
+                Text(
+                  item.status.displayName,
+                  style: TextStyle(
+                    color: statusColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  // 4. Widget Card chi tiết
-  // 2. Cập nhật giao diện Card chi tiết
-  Widget _buildOvertimeCard(Map<String, dynamic> data) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            data['title'] ?? '',
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          const SizedBox(height: 8),
-          _buildInfoRow('Ngày OT:', data['otDate'] ?? ''),
-          _buildInfoRow('Giờ bắt đầu:', data['startHour'] ?? ''),
-          _buildInfoRow('Giờ kết thúc:', data['endHour'] ?? ''),
-          _buildInfoRow('Tổng số giờ:', data['total'] ?? ''),
-          _buildInfoRow('Lý do:', data['reason'] ?? ''),
-          sdsSBHeight8,
-          Row(
-            children: [
-              Icon(Icons.circle,
-                  color: data['statusColor'] ?? Colors.grey, size: 10),
-              sdsSBWidth8,
-              Text(
-                data['status'] ?? '',
-                style: TextStyle(
-                  color: data['statusColor'] ?? Colors.grey,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  Color _getStatusColor(RequestStatus status) {
+    if (status.isApproved) return Colors.green;
+    if (status.isRejected) return Colors.red;
+    if (status.isCancelled) return Colors.grey;
+    if (status.isPendingManager) return Colors.orange;
+    if (status.isPendingHR) return Colors.blue;
+    return Colors.grey;
   }
 
   Widget _buildInfoRow(String label, String value) {
@@ -187,7 +215,7 @@ extension OvertimeListWidget on OvertimeListPage {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 140,
+            width: 100,
             child: Text(
               label,
               style: const TextStyle(
@@ -206,6 +234,201 @@ extension OvertimeListWidget on OvertimeListPage {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // Tab "Tôi duyệt"
+  Widget _buildApprovalList() {
+    return Obx(() {
+      if (controller.isHRorAdmin) {
+        return _buildHrOtList();
+      } else {
+        return _buildManagerOtList();
+      }
+    });
+  }
+
+  Widget _buildManagerOtList() {
+    return Obx(() {
+      final filteredRequests = controller.filteredManagerRequests;
+
+      if (filteredRequests.isEmpty) {
+        return const Center(
+          child: Text(
+            'Không có đơn OT nào cần duyệt',
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+        );
+      }
+
+      return ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: filteredRequests.length,
+        itemBuilder: (context, index) =>
+            _buildManagerOtCard(filteredRequests[index]),
+        separatorBuilder: (context, index) => sdsSBHeight12,
+      );
+    });
+  }
+
+  Widget _buildManagerOtCard(OtRequestManagerItem item) {
+    final statusColor = _getStatusColor(item.status);
+    final otDate = convertDateToString(item.otDate, PATTERN_1);
+    final startHour =
+        '${item.startTime.hour.toString().padLeft(2, '0')}:${item.startTime.minute.toString().padLeft(2, '0')}';
+    final endHour =
+        '${item.endTime.hour.toString().padLeft(2, '0')}:${item.endTime.minute.toString().padLeft(2, '0')}';
+
+    return GestureDetector(
+        onTap: () async {
+          final result = await Get.toNamed(
+            AppRoute.routeOverTimeDetail,
+            arguments: OvertimeDetailArgument(
+              otId: item.requestId,
+              isFromManagerListPage: true,
+              isFromHrListPage: false,
+            ),
+          );
+          if (result == true) {
+            controller.fetchManagerOtRequests();
+          }
+        },
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(color: Colors.grey.shade200),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Làm thêm giờ tháng ${item.otDate.month}/${item.otDate.year}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Color(0xFF1E293B),
+                ),
+              ),
+              const SizedBox(height: 10),
+              _buildInfoRow('Nhân viên:', item.employeeName),
+              _buildInfoRow('Ngày OT:', otDate),
+              _buildInfoRow('Giờ bắt đầu:', startHour),
+              _buildInfoRow('Giờ kết thúc:', endHour),
+              _buildInfoRow('Lý do:', item.reason),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Icon(Icons.circle, color: statusColor, size: 10),
+                  const SizedBox(width: 6),
+                  Text(
+                    item.status.displayName,
+                    style: TextStyle(
+                      color: statusColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ));
+  }
+
+  Widget _buildHrOtList() {
+    return Obx(() {
+      final filteredRequests = controller.filteredHrRequests;
+
+      if (filteredRequests.isEmpty) {
+        return const Center(
+          child: Text(
+            'Không có đơn OT nào cần duyệt',
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+        );
+      }
+
+      return ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: filteredRequests.length,
+        itemBuilder: (context, index) =>
+            _buildHrOtCard(filteredRequests[index]),
+        separatorBuilder: (context, index) => sdsSBHeight12,
+      );
+    });
+  }
+
+  Widget _buildHrOtCard(OtRequestHrItem item) {
+    final statusColor = _getStatusColor(item.status);
+    final otDate = convertDateToString(item.otDate, PATTERN_1);
+    final startHour =
+        '${item.startTime.hour.toString().padLeft(2, '0')}:${item.startTime.minute.toString().padLeft(2, '0')}';
+    final endHour =
+        '${item.endTime.hour.toString().padLeft(2, '0')}:${item.endTime.minute.toString().padLeft(2, '0')}';
+
+    return GestureDetector(
+      onTap: () async {
+        final result = await Get.toNamed(
+          AppRoute.routeOverTimeDetail,
+          arguments: OvertimeDetailArgument(
+            otId: item.requestId,
+            isFromManagerListPage: false,
+            isFromHrListPage: true,
+          ),
+        );
+        if (result == true) {
+          controller.fetchHrRequests();
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Làm thêm giờ tháng ${item.otDate.month}/${item.otDate.year}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+            const SizedBox(height: 10),
+            _buildInfoRow('Nhân viên:', item.employeeName),
+            _buildInfoRow('Phòng ban:', item.departmentName),
+            _buildInfoRow('Chức vụ:', item.positionName),
+            _buildInfoRow('Quản lý:', item.managerName),
+            _buildInfoRow('Ngày OT:', otDate),
+            _buildInfoRow('Giờ bắt đầu:', startHour),
+            _buildInfoRow('Giờ kết thúc:', endHour),
+            _buildInfoRow('Lý do:', item.reason),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Icon(Icons.circle, color: statusColor, size: 10),
+                const SizedBox(width: 6),
+                Text(
+                  item.status.displayName,
+                  style: TextStyle(
+                    color: statusColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

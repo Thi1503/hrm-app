@@ -1,6 +1,12 @@
 import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/const/colors.dart';
+import 'package:do_an_application/features/propose/enums/request_status.dart';
+import 'package:do_an_application/features/propose/overtime/overtime_detail/models/overtime_detail_argument.dart';
 import 'package:do_an_application/features/propose/overtime/overtime_list/controller/overtime_list_controller.dart';
+import 'package:do_an_application/features/propose/overtime/overtime_list/models/ot_request_hr_item.dart';
+import 'package:do_an_application/features/propose/overtime/overtime_list/models/ot_request_item.dart';
+import 'package:do_an_application/features/propose/overtime/overtime_list/models/ot_request_manager_item.dart';
+import 'package:do_an_application/utils/date_utils.dart';
 import 'package:do_an_application/utils/sized_box/sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,11 +36,21 @@ class OvertimeListPage extends BaseGetWidget<OvertimeListController> {
               child: TabBarView(
                 children: [
                   _buildOvertimeList(),
-                  const Center(child: Text('Danh sách Tôi duyệt')),
+                  _buildApprovalList(),
                 ],
               ),
             ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final result = await Get.toNamed(AppRoute.routeOverTimeForm);
+            if (result == true) {
+              controller.fetchOtRequests();
+            }
+          },
+          backgroundColor: const Color(0xFFF97316),
+          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );

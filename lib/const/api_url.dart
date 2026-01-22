@@ -41,4 +41,13 @@ class ApiUrl {
       '/request-approval/attendance-explanations/detail/$id';
   static const String urlCreateExplanation =
       '/request-approval/attendance-explanations/create';
+
+  static const String urlGetMyOtRequests = '/request-approval/ot-requests/list';
+  static const String urlGetManagerOtRequests =
+      '/request-approval/approvals/manager/ots';
+  static const String urlGetHrOtRequests = '/request-approval/approvals/hr/ots';
+  static String urlGetOtRequestDetail(int id) =>
+      '/request-approval/ot-requests/detail/$id';
+  static const String urlCreateOtRequest =
+      '/request-approval/ot-requests/create';
 }
