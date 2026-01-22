@@ -92,7 +92,13 @@ extension AttendanceExplanationListWidget on AttendanceExplanationListPage {
 
   Widget _buildCircleButton(IconData icon) {
     return InkWell(
-      onTap: () => Get.toNamed(AppRoute.routeTimekeepingExplanationForm),
+      onTap: () async {
+        final result =
+            await Get.toNamed(AppRoute.routeTimekeepingExplanationForm);
+        if (result == true) {
+          controller.fetchMyExplanations();
+        }
+      },
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: const BoxDecoration(
