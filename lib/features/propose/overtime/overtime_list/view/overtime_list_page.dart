@@ -37,6 +37,16 @@ class OvertimeListPage extends BaseGetWidget<OvertimeListController> {
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final result = await Get.toNamed(AppRoute.routeOverTimeForm);
+            if (result == true) {
+              controller.fetchOtRequests();
+            }
+          },
+          backgroundColor: const Color(0xFFF97316),
+          child: const Icon(Icons.add, color: Colors.white),
+        ),
       ),
     );
   }
