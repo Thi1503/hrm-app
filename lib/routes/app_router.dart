@@ -6,6 +6,7 @@ import 'package:do_an_application/features/individual/worksheet/view/worksheet_p
 import 'package:do_an_application/features/login/view/login_page.dart';
 import 'package:do_an_application/features/main/view/main_page.dart';
 import 'package:do_an_application/features/profile/view/profile_page.dart';
+import 'package:do_an_application/features/propose/overtime/overtime_detail/view/overtime_detail_page.dart';
 import 'package:do_an_application/features/propose/overtime/overtime_form/view/overtime_form_page.dart';
 import 'package:do_an_application/features/propose/overtime/overtime_list/view/overtime_list_page.dart';
 import 'package:do_an_application/features/propose/register_leave/register_detail/view/register_leave_detail_page.dart';
@@ -69,6 +70,10 @@ abstract class AppRouter {
     GetPage(
       name: AppRoute.routeOverTimeForm,
       page: () => OvertimeFormPage(),
+    ),
+    GetPage(
+      name: AppRoute.routeOverTimeDetail,
+      page: () => OvertimeDetailPage(),
     ),
     GetPage(
       name: AppRoute.routeRegisterRemoteList,
