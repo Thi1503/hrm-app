@@ -56,7 +56,8 @@ extension CheckInWidget on CheckInPage {
               ),
               children: [
                 TileLayer(
-                  urlTemplate: 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+                  urlTemplate:
+                      'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
                   userAgentPackageName: 'com.example.do_an_application',
                 ),
                 MarkerLayer(
@@ -175,7 +176,6 @@ extension CheckInWidget on CheckInPage {
           ),
           const SizedBox(width: 16),
           Expanded(
-            flex: 2,
             child: ElevatedButton.icon(
               onPressed: () {
                 if (isCheckOut) {
