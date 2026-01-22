@@ -22,4 +22,6 @@ abstract class AppRoute {
   static const routeHistoryExplanation = '/history_explanation';
   static const routeUpdateAccountInfo = '/update_account_info';
   static const routeWorkSheet = '/work_sheet';
+  static const routeCheckIn = '/check_in';
+  static const routeCheckOut = '/check_out';
 }
