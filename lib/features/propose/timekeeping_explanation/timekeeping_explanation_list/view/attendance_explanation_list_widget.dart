@@ -133,12 +133,182 @@ extension AttendanceExplanationListWidget on AttendanceExplanationListPage {
     });
   }
 
-  // 4. TAB TÔI DUYỆT: Cập nhật với 3 item
+  // 4. TAB TÔI DUYỆT: Hiển thị danh sách từ controller
   Widget _buildApproverList() {
-    return const Center(
-      child: Text(
-        'Không có đơn giải trình nào cần duyệt',
-        style: TextStyle(color: Colors.grey, fontSize: 16),
+    return Obx(() {
+      // Hiển thị danh sách manager nếu không phải HR/Admin
+      if (!controller.isHRorAdmin) {
+        return _buildManagerExplanationList();
+      }
+      // Hiển thị danh sách HR nếu là HR/Admin
+      return _buildHrExplanationList();
+    });
+  }
+
+  Widget _buildManagerExplanationList() {
+    final filteredExplanations = controller.filteredManagerExplanations;
+
+    if (filteredExplanations.isEmpty) {
+      return const Center(
+        child: Text(
+          'Không có đơn giải trình nào',
+          style: TextStyle(color: Colors.grey, fontSize: 16),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      itemCount: filteredExplanations.length,
+      itemBuilder: (context, index) =>
+          _buildManagerExplanationCard(filteredExplanations[index]),
+    );
+  }
+
+  Widget _buildHrExplanationList() {
+    final filteredExplanations = controller.filteredHrExplanations;
+
+    if (filteredExplanations.isEmpty) {
+      return const Center(
+        child: Text(
+          'Không có đơn giải trình nào',
+          style: TextStyle(color: Colors.grey, fontSize: 16),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      itemCount: filteredExplanations.length,
+      itemBuilder: (context, index) =>
+          _buildHrExplanationCard(filteredExplanations[index]),
+    );
+  }
+
+  Widget _buildManagerExplanationCard(ExplanationManagerItem item) {
+    final statusColor = _getStatusColor(item.status);
+    final workDate = convertDateToString(item.workDate, PATTERN_1);
+
+    return InkWell(
+      onTap: () async {
+        final result = await Get.toNamed(
+          AppRoute.routeTimekeepingExplanationDetail,
+          arguments: ExplanationDetailArgument(
+            requestId: item.requestId,
+            employeeName: item.employeeName,
+            isFromManagerListPage: true,
+          ),
+        );
+        if (result == true) {
+          controller.fetchManagerExplanations();
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Giải trình tháng ${item.workDate.month}/${item.workDate.year}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+            const SizedBox(height: 10),
+            _buildInfoRow('Nhân viên:', item.employeeName),
+            _buildInfoRow('Ngày chấm công:', workDate),
+            _buildInfoRow('Loại giải trình:', item.explanationType.displayName),
+            _buildInfoRow('Lý do:', item.reason),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Icon(Icons.circle, color: statusColor, size: 10),
+                const SizedBox(width: 6),
+                Text(
+                  item.status.displayName,
+                  style: TextStyle(
+                    color: statusColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHrExplanationCard(ExplanationHrItem item) {
+    final statusColor = _getStatusColor(item.status);
+    final workDate = convertDateToString(item.workDate, PATTERN_1);
+
+    return InkWell(
+      onTap: () async {
+        final result = await Get.toNamed(
+          AppRoute.routeTimekeepingExplanationDetail,
+          arguments: ExplanationDetailArgument(
+            requestId: item.requestId,
+            employeeName: item.employeeName,
+            departmentName: item.departmentName,
+            isFromHrListPage: true,
+          ),
+        );
+        if (result == true) {
+          controller.fetchHrExplanations();
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Giải trình tháng ${item.workDate.month}/${item.workDate.year}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+            const SizedBox(height: 10),
+            _buildInfoRow('Nhân viên:', item.employeeName),
+            _buildInfoRow('Phòng ban:', item.departmentName),
+            _buildInfoRow('Ngày chấm công:', workDate),
+            _buildInfoRow('Loại giải trình:', item.explanationType.displayName),
+            _buildInfoRow('Lý do:', item.reason),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Icon(Icons.circle, color: statusColor, size: 10),
+                const SizedBox(width: 6),
+                Text(
+                  item.status.displayName,
+                  style: TextStyle(
+                    color: statusColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -149,9 +319,16 @@ extension AttendanceExplanationListWidget on AttendanceExplanationListPage {
     final workDate = convertDateToString(item.workDate, PATTERN_1);
 
     return InkWell(
-      onTap: () {
-        // TODO: Navigate to detail page
-        // showSnackBar('Chi tiết đơn giải trình #${item.id}');
+      onTap: () async {
+        final result = await Get.toNamed(
+          AppRoute.routeTimekeepingExplanationDetail,
+          arguments: ExplanationDetailArgument(
+            requestId: item.id,
+          ),
+        );
+        if (result == true) {
+          controller.fetchMyExplanations();
+        }
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),

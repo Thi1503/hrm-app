@@ -1,8 +1,11 @@
 import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/const/colors.dart';
 import 'package:do_an_application/features/propose/enums/request_status.dart';
+import 'package:do_an_application/features/propose/timekeeping_explanation/timekeeping_explanation_detail/models/explanation_detail_argument.dart';
 import 'package:do_an_application/features/propose/timekeeping_explanation/timekeeping_explanation_list/controller/attendance_explanation_list_controller.dart';
 import 'package:do_an_application/features/propose/timekeeping_explanation/timekeeping_explanation_list/models/attendance_explantation_item.dart';
+import 'package:do_an_application/features/propose/timekeeping_explanation/timekeeping_explanation_list/models/explanation_hr_item.dart';
+import 'package:do_an_application/features/propose/timekeeping_explanation/timekeeping_explanation_list/models/explanation_manager_item.dart';
 import 'package:do_an_application/routes/app_route.dart';
 import 'package:do_an_application/utils/date_utils.dart';
 import 'package:flutter/material.dart';
