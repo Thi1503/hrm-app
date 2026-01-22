@@ -13,7 +13,7 @@ import 'package:do_an_application/features/propose/register_leave/register_leave
 import 'package:do_an_application/features/propose/register_remote/register_remote_form/view/register_remote_form_page.dart';
 import 'package:do_an_application/features/propose/register_remote/register_remote_list/view/register_remote_list_page.dart';
 import 'package:do_an_application/features/propose/timekeeping_explanation/timekeeping_explanation_form/view/timekeeping_explanation_form_page.dart';
-import 'package:do_an_application/features/propose/timekeeping_explanation/timekeeping_explanation_list/view/timekeeping_explanation_list_page.dart';
+import 'package:do_an_application/features/propose/timekeeping_explanation/timekeeping_explanation_list/view/attendance_explanation_list_page.dart';
 import 'package:do_an_application/features/update_account_info/view/update_account_info_page.dart';
 import 'package:do_an_application/routes/app_route.dart';
 import 'package:get/get.dart';
@@ -74,7 +74,7 @@ abstract class AppRouter {
     ),
     GetPage(
       name: AppRoute.routeTimekeepingExplanationList,
-      page: () => TimekeepingExplanationListPage(),
+      page: () => AttendanceExplanationListPage(),
     ),
     GetPage(
       name: AppRoute.routeTimekeepingExplanationForm,

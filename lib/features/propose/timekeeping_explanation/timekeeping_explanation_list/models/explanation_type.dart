@@ -1,9 +1,7 @@
 enum ExplanationType {
   lateArrival('LATE', 'Đi trễ'),
   earlyLeave('EARLY', 'Về sớm'),
-  absent('ABSENT', 'Quên chấm công'),
-  forgotCheckIn('ABSENT', 'Quên check-in'),
-  forgotCheckOut('ABSENT', 'Quên check-out');
+  absent('ABSENT', 'Lỗi chấm công');
 
   final String value;
   final String displayName;
@@ -25,6 +23,4 @@ enum ExplanationType {
   bool get isLateArrival => this == ExplanationType.lateArrival;
   bool get isEarlyLeave => this == ExplanationType.earlyLeave;
   bool get isAbsent => this == ExplanationType.absent;
-  bool get isForgotCheckIn => this == ExplanationType.forgotCheckIn;
-  bool get isForgotCheckOut => this == ExplanationType.forgotCheckOut;
 }
