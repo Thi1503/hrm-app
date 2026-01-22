@@ -56,8 +56,8 @@ extension CheckInWidget on CheckInPage {
               ),
               children: [
                 TileLayer(
-                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  userAgentPackageName: 'com.example.app',
+                  urlTemplate: 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+                  userAgentPackageName: 'com.example.do_an_application',
                 ),
                 MarkerLayer(
                   markers: [
