@@ -1,4 +1,5 @@
 import 'package:dio_log_sds/http_log_list_widget.dart';
+import 'package:do_an_application/features/attendance/check_in/view/check_in_page.dart';
 import 'package:do_an_application/features/home/view/home_page.dart';
 import 'package:do_an_application/features/individual/history_explanation/view/history_explanation_page.dart';
 import 'package:do_an_application/features/individual/worksheet/view/worksheet_page.dart';
@@ -100,6 +101,14 @@ abstract class AppRouter {
     GetPage(
       name: AppRoute.routeDioLog,
       page: () => HttpLogListWidget(),
+    ),
+    GetPage(
+      name: AppRoute.routeCheckIn,
+      page: () => CheckInPage(isCheckOut: false),
+    ),
+    GetPage(
+      name: AppRoute.routeCheckOut,
+      page: () => CheckInPage(isCheckOut: true),
     ),
   ];
 }
