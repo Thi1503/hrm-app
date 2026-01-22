@@ -10,16 +10,9 @@ extension TimekeepingExplanationFormWidget on TimekeepingExplanationFormPage {
         children: [
           _buildTimekeepingDate(),
           sdsSBHeight12,
-          _buildDropdownField(
-            label: 'Loại giải trình',
-            hint: 'Chọn loại giải trình',
-            isRequired: true,
-          ),
+          _buildExplanationTypeDropdown(),
           sdsSBHeight12,
           _buildReasonInput(),
-          sdsSBHeight12,
-          _buildLabel('File minh chứng'),
-          _buildSelectUploadFile(),
         ],
       ),
     );
@@ -84,7 +77,7 @@ extension TimekeepingExplanationFormWidget on TimekeepingExplanationFormPage {
             child: _buildButton(
               'Gửi phê duyệt',
               const Color(0xFFF97316),
-              () {},
+              () => controller.submitExplanation(),
             ),
           ),
         ],
@@ -113,30 +106,41 @@ extension TimekeepingExplanationFormWidget on TimekeepingExplanationFormPage {
     );
   }
 
-  Widget _buildDropdownField({
-    required String label,
-    required String hint,
-    bool isRequired = false,
-  }) {
+  Widget _buildExplanationTypeDropdown() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildLabel(label, isRequired: isRequired),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF8FAFC),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: const Color(0xFFE2E8F0)),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              isExpanded: true,
-              hint: Text(hint,
-                  style: const TextStyle(fontSize: 14, color: Colors.black38)),
-              icon: const Icon(Icons.keyboard_arrow_down, color: Colors.orange),
-              items: [],
-              onChanged: (_) {},
+        _buildLabel('Loại giải trình', isRequired: true),
+        Obx(
+          () => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF8FAFC),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: controller.explanationTypeSelected.value.isEmpty
+                    ? null
+                    : controller.explanationTypeSelected.value,
+                hint: const Text('Chọn loại giải trình',
+                    style: TextStyle(fontSize: 14, color: Colors.black38)),
+                icon:
+                    const Icon(Icons.keyboard_arrow_down, color: Colors.orange),
+                items: controller.explanationTypeMap.keys.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value, style: const TextStyle(fontSize: 14)),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    controller.explanationTypeSelected.value = value;
+                  }
+                },
+              ),
             ),
           ),
         ),
