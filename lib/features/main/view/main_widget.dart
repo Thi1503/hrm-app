@@ -33,12 +33,6 @@ extension MainWidget on MainPage {
             activeIcon: Assets.ASSETS_ICONS_ICON_NOTIFICATION_SELECT_SVG,
           ),
           _buildNavigationItem(
-            label: 'Quản lý',
-            icon: Assets.ASSETS_ICONS_ICON_PROFILE_SVG,
-            activeIcon: Assets.ASSETS_ICONS_ICON_PROFILE_SELECT_SVG,
-            useSvg: false,
-          ),
-          _buildNavigationItem(
             label: 'Cá nhân',
             icon: Assets.ASSETS_ICONS_ICON_PROFILE_SVG,
             activeIcon: Assets.ASSETS_ICONS_ICON_PROFILE_SELECT_SVG,

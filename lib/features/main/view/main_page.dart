@@ -48,7 +48,7 @@ class MainPage extends BaseGetWidget<MainController> {
         HomePage(),
         ProposePage(),
         NotificationPage(),
-        ManagePage(),
+        // ManagePage(),
         IndividualPage(),
       ],
     );
