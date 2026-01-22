@@ -1,6 +1,7 @@
 import 'package:do_an_application/base/base.dart';
 import 'package:do_an_application/features/attendance/models/check_in_request.dart';
 import 'package:do_an_application/features/attendance/services/location_service.dart';
+import 'package:do_an_application/features/home/controller/home_controller.dart';
 import 'package:do_an_application/features/home/repository/home_repository.dart';
 import 'package:do_an_application/utils/logger.dart';
 import 'package:location/location.dart' as loc;
@@ -66,6 +67,10 @@ class CheckInController extends BaseGetxController {
 
       if (response.isSuccess) {
         showSnackBar('Check-in thành công');
+        // Refresh logs in home controller
+        if (Get.isRegistered<HomeController>()) {
+          Get.find<HomeController>().fetchMyLogs();
+        }
         Get.back(result: true);
       } else {
         showSnackBar(response.message);
@@ -97,6 +102,10 @@ class CheckInController extends BaseGetxController {
 
       if (response.isSuccess) {
         showSnackBar('Check-out thành công');
+        // Refresh logs in home controller
+        if (Get.isRegistered<HomeController>()) {
+          Get.find<HomeController>().fetchMyLogs();
+        }
         Get.back(result: true);
       } else {
         showSnackBar(response.message);
