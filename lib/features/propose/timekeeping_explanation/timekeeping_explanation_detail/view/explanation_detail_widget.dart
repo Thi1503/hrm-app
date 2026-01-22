@@ -51,10 +51,10 @@ extension ExplanationDetailWidget on ExplanationDetailPage {
               Text(detail.reason),
             ),
             SizedBox(height: AppDimens.defaultPadding),
-            _buildInfoRow(
-              'Ngày tạo:',
-              Text(DateFormat('dd/MM/yyyy HH:mm').format(detail.createdAt)),
-            ),
+            // _buildInfoRow(
+            //   'Ngày tạo:',
+            //   Text(DateFormat('dd/MM/yyyy HH:mm').format(detail.createdAt)),
+            // ),
           ],
         ),
       );
