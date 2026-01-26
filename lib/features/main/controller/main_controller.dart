@@ -6,7 +6,7 @@ class MainController extends BaseGetxController
     with GetSingleTickerProviderStateMixin {
   static const int initialIndex = 0;
 
-  late final TabController tabCtrl = TabController(length: 5, vsync: this);
+  late final TabController tabCtrl = TabController(length: 4, vsync: this);
 
   final currentIndex = initialIndex.obs;
   final canPop = false.obs;
